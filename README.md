@@ -8,7 +8,7 @@ CMake modules that abstract common functionality in the JEGP libraries.
 
 This module defines the following function.
 
-```CMake
+```
 jegp_add_test(<name>
               [COMPILE_ONLY]
               [SOURCE <source>]
