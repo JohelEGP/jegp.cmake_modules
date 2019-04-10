@@ -22,4 +22,4 @@ This function adds the executable target `jegp_test_${name}`.
     Defaults to `${name}.cpp`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries
-    besides `${PROJECT_NAME}`.
+    besides `jegp::${PROJECT_NAME}`.
