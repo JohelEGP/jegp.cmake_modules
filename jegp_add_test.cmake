@@ -5,7 +5,7 @@ function(jegp_add_test name)
     list(APPEND JEGP_ADD_TEST_SOURCE ${name}.cpp)
     list(GET JEGP_ADD_TEST_SOURCE 0 source)
 
-    add_executable(jegp_test_${name} test/${source})
+    add_executable(jegp_test_${name} ${source})
     target_compile_options(jegp_test_${name}
         PRIVATE ${JEGP_ADD_TEST_COMPILE_OPTIONS})
     target_link_libraries(jegp_test_${name}
