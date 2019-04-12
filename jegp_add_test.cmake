@@ -1,6 +1,9 @@
 function(jegp_add_test name)
-    cmake_parse_arguments(PARSE_ARGV 0 JEGP_ADD_TEST
-        "COMPILE_ONLY" "SOURCE" "COMPILE_OPTIONS;LINK_LIBRARIES")
+    cmake_parse_arguments(JEGP_ADD_TEST
+        "COMPILE_ONLY"
+        "SOURCE"
+        "COMPILE_OPTIONS;LINK_LIBRARIES"
+        ${ARGN})
 
     list(APPEND JEGP_ADD_TEST_SOURCE ${name}.cpp)
     list(GET JEGP_ADD_TEST_SOURCE 0 source)
