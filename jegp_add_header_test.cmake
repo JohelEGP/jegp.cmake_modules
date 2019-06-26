@@ -1,13 +1,7 @@
 function(jegp_add_header_test)
     include(TestHeaders)
 
-    get_property(include_directory
-        TARGET ${PROJECT_NAME}
-        PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    list(LENGTH include_directory include_directory_length)
-    if(NOT include_directory_length EQUAL 1)
-        message(FATAL_ERROR "Expected only one include directory")
-    endif()
+    set(include_directory ${${PROJECT_NAME}_SOURCE_DIR}/include)
 
     file(GLOB_RECURSE headers
         RELATIVE ${include_directory}

@@ -23,7 +23,7 @@ Otherwise, a build error should give a clue about the problematic headers.
 The target name is `${PROJECT_NAME}_headers` with `_test` inserted after `jegp`.
 `jegp::${PROJECT_NAME}` is a `PRIVATE` linked library of the target.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
-in the directory indicated by its `INTERFACE_INCLUDE_DIRECTORIES` property.
+in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.
 
 ### `jegp_add_test`
 
