@@ -12,7 +12,7 @@ function(jegp_add_test name)
     target_compile_options(jegp_test_${name}
         PRIVATE ${JEGP_ADD_TEST_COMPILE_OPTIONS})
     target_link_libraries(jegp_test_${name}
-        PRIVATE ${JEGP_ADD_TEST_LINK_LIBRARIES} jegp::${PROJECT_NAME})
+        PRIVATE ${JEGP_ADD_TEST_LINK_LIBRARIES} ${PROJECT_NAME})
     if(NOT JEGP_ADD_TEST_COMPILE_ONLY)
         add_test(jegp_test_${name} jegp_test_${name})
     endif()

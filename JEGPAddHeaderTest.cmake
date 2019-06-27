@@ -11,6 +11,5 @@ function(jegp_add_header_test)
         jegp_test_libname_headers
         ${PROJECT_NAME}_headers)
     add_header_test(${jegp_test_libname_headers} HEADERS ${headers})
-    target_link_libraries(${jegp_test_libname_headers}
-        PRIVATE jegp::${PROJECT_NAME})
+    target_link_libraries(${jegp_test_libname_headers} PRIVATE ${PROJECT_NAME})
 endfunction()
