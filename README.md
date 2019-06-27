@@ -4,7 +4,7 @@ CMake modules that abstract common functionality in the JEGP libraries.
 
 ## Modules
 
-### `jegp_add_header_test`
+### `JEGPAddHeaderTest`
 
 This module defines the following function.
 
@@ -25,7 +25,7 @@ The target name is `${PROJECT_NAME}_headers` with `_test` inserted after `jegp`.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
 in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.
 
-### `jegp_add_test`
+### `JEGPAddTest`
 
 This module defines the following function.
 
@@ -45,6 +45,6 @@ This function adds the executable target `jegp_test_${name}`.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries
     besides `jegp::${PROJECT_NAME}`.
 
-### `jegp_test_utilities`
+### `JEGPTestUtilities`
 
 This module includes `jegp_add_header_test` and `jegp_add_test`.
