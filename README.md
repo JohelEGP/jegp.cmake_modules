@@ -20,7 +20,7 @@ Otherwise, a build error should give a clue about the problematic headers.
 [SF.11]: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained
 "Header files should be self-contained"
 
-The target name is `${PROJECT_NAME}_headers` with `_test` inserted after `jegp`.
+The target name is `${PROJECT_NAME}_test_headers`.
 `${PROJECT_NAME}` is a `PRIVATE` linked library of the target.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
 in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.

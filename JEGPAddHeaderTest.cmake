@@ -7,9 +7,6 @@ function(jegp_add_header_test)
         RELATIVE ${include_directory}
         ${include_directory}/*.hpp)
 
-    string(REPLACE jegp jegp_test
-        jegp_test_libname_headers
-        ${PROJECT_NAME}_headers)
-    add_header_test(${jegp_test_libname_headers} HEADERS ${headers})
-    target_link_libraries(${jegp_test_libname_headers} PRIVATE ${PROJECT_NAME})
+    add_header_test(${PROJECT_NAME}_test_headers HEADERS ${headers})
+    target_link_libraries(${PROJECT_NAME}_test_headers PRIVATE ${PROJECT_NAME})
 endfunction()
