@@ -3,7 +3,8 @@ function(jegp_add_header_test)
 
     set(include_directory ${${PROJECT_NAME}_SOURCE_DIR}/include)
 
-    file(GLOB_RECURSE headers
+    file(
+        GLOB_RECURSE headers
         RELATIVE ${include_directory}
         ${include_directory}/*.hpp)
 

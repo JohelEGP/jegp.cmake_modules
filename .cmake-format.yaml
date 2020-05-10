@@ -1,0 +1,35 @@
+parse:
+  additional_commands:
+    jegp_add_test:
+      pargs:
+        nargs: 1+
+        flags:
+        - COMPILE_ONLY
+      kwargs:
+        SOURCE: 1
+        COMPILE_OPTIONS: +
+        LINK_LIBRARIES: +
+format:
+  line_width: 80
+  tab_size: 4
+  max_subgroups_hwrap: 2
+  max_pargs_hwrap: 6
+  max_rows_cmdline: 2
+  separate_ctrl_name_with_space: false
+  separate_fn_name_with_space: false
+  dangle_parens: false
+  min_prefix_chars: 4
+  max_prefix_chars: 10
+  max_lines_hwrap: 2
+  line_ending: unix
+  command_case: canonical
+  keyword_case: unchanged
+  always_wrap: []
+  enable_sort: true
+  autosort: true
+  require_valid_layout: false
+  layout_passes: {}
+markup:
+  enable_markup: true
+misc:
+  per_command: {}
