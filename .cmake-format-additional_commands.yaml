@@ -1,0 +1,11 @@
+parse:
+  additional_commands:
+    jegp_add_test:
+      pargs:
+        nargs: 1+
+        flags:
+        - COMPILE_ONLY
+      kwargs:
+        SOURCE: 1
+        COMPILE_OPTIONS: +
+        LINK_LIBRARIES: +
