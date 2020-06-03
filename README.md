@@ -37,7 +37,7 @@ jegp_add_test(<name>
               [LINK_LIBRARIES <library>...])
 ```
 
-This function adds the executable target `jegp_test_${name}`.
+This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `COMPILE_ONLY` specifies that it doesn't need to be run by `ctest`.
 - `SOURCE` specifies its source file in `${CMAKE_CURRENT_SOURCE_DIR}`.
     Defaults to `${name}.cpp`.
