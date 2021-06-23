@@ -7,12 +7,15 @@ function(jegp_add_test name)
 
     set(test_name ${PROJECT_NAME}_test_${name})
 
-    add_executable(${test_name} ${source})
+    if(JEGP_ADD_TEST_COMPILE_ONLY)
+        add_library(${test_name} OBJECT ${source})
+    else()
+        add_executable(${test_name} ${source})
+        add_test(${test_name} ${test_name})
+    endif()
+
     target_compile_options(${test_name}
                            PRIVATE ${JEGP_ADD_TEST_COMPILE_OPTIONS})
     target_link_libraries(${test_name} PRIVATE ${JEGP_ADD_TEST_LINK_LIBRARIES}
                                                ${PROJECT_NAME})
-    if(NOT JEGP_ADD_TEST_COMPILE_ONLY)
-        add_test(${test_name} ${test_name})
-    endif()
 endfunction()
