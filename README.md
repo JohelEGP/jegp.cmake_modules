@@ -43,7 +43,7 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
     Defaults to `${name}.cpp`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
-    A valid target `${PROJECT_NAME}` is also implicitly linked.
+    A valid target `${PROJECT_NAME}` is also implicitly linked (deprecated).
 
 ### `JEGPTestUtilities`
 

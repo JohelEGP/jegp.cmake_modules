@@ -16,6 +16,10 @@ function(jegp_add_test name)
 
     if(TARGET ${PROJECT_NAME})
         set(implicit_linked_library ${PROJECT_NAME})
+        message(
+            DEPRECATION
+                "Implicitly linking of ${implicit_linked_library} to ${test_name}."
+        )
     endif()
 
     target_compile_options(${test_name}
