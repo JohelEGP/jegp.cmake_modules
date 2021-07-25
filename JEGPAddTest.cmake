@@ -14,8 +14,12 @@ function(jegp_add_test name)
         add_test(${test_name} ${test_name})
     endif()
 
+    if(TARGET ${PROJECT_NAME})
+        set(implicit_linked_library ${PROJECT_NAME})
+    endif()
+
     target_compile_options(${test_name}
                            PRIVATE ${JEGP_ADD_TEST_COMPILE_OPTIONS})
     target_link_libraries(${test_name} PRIVATE ${JEGP_ADD_TEST_LINK_LIBRARIES}
-                                               ${PROJECT_NAME})
+                                               ${implicit_linked_library})
 endfunction()

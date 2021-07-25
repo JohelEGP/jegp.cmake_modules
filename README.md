@@ -42,8 +42,8 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `SOURCE` specifies its source file in `${CMAKE_CURRENT_SOURCE_DIR}`.
     Defaults to `${name}.cpp`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
-- `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries
-    besides `${PROJECT_NAME}`.
+- `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
+    A valid target `${PROJECT_NAME}` is also implicitly linked.
 
 ### `JEGPTestUtilities`
 
