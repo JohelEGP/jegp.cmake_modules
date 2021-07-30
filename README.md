@@ -45,6 +45,25 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
   A valid target `${PROJECT_NAME}` is also implicitly linked (deprecated).
 
+### `JEGPAddCompilerErrorTest`
+
+This module defines the following function.
+
+```
+jegp_add_compiler_error_test(<name>
+                             [SOURCE <source>]
+                             [COMPILE_OPTIONS <option>...]
+                             [LINK_LIBRARIES <library>...])
+```
+
+This function adds a target to `all` that checks that
+compiling the source fails with specified error messages.
+
+The error messages appear in the source
+in their expected order of appearance in the compiler error.
+They match the regex ` *// *error: *([^\n]+) *`.
+The submatch is what is checked.
+
 ### `JEGPTestUtilities`
 
-This module includes `jegp_add_header_test` and `jegp_add_test`.
+This module includes all other modules.

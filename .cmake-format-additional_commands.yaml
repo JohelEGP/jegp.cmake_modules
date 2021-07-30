@@ -9,3 +9,10 @@ parse:
         SOURCE: 1
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
+    jegp_add_compiler_error_test:
+      pargs:
+        nargs: 1+
+      kwargs:
+        SOURCE: 1
+        COMPILE_OPTIONS: +
+        LINK_LIBRARIES: +
