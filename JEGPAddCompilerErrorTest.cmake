@@ -13,6 +13,7 @@ function(jegp_add_compiler_error_test name)
             -D FILE=${split_source_path} -D TARGET=${test_name} -P
             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPTestCompilerError.cmake
     MAIN_DEPENDENCY ${original_source_path}
+    DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
   add_custom_target(${test_name}_run ALL SOURCES ${original_source_path} DEPENDS ${split_source_path})
