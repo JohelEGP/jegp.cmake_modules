@@ -45,25 +45,37 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
   A valid target `${PROJECT_NAME}` is also implicitly linked (deprecated).
 
-### `JEGPCompilerError`
+### `JEGPBuildError`
 
 This module defines the following function.
 
 ```
-jegp_add_compiler_error_test(<name>
-                             [SOURCE <source>]
-                             [COMPILE_OPTIONS <option>...]
-                             [LINK_LIBRARIES <library>...])
+jegp_add_build_error(<name>
+                     [AS {TEST | BUILD_CHECK}]
+                     [TYPE {OBJECT_LIBRARY | EXECUTABLE}]
+                     [SOURCE <source>]
+                     [COMPILE_OPTIONS <option>...]
+                     [LINK_LIBRARIES <library>...])
 ```
 
-This function adds a target to `all` that checks that
-compiling the source fails with specified error messages.
+This function permits checking that building the source fails with specified error messages.
+The check is added as a test by default; it can also happen at build-time, according to `AS`.
+The type of the target that builds the source is specified by `TYPE` and defaults to `OBJECT_LIBRARY`.
+The meaning of the other keywords can be inferred from `jegp_add_test`.
 
-The error messages appear in the source
-in their expected order of appearance in the compiler error.
-They match the regex ` *// *error: *([^\n]+) *`.
-The submatch is what is checked.
+The error message specifiers are in the source in their expected order of appearance in the build output.
+They match the [regex][] ` *// *error(-regex)?: *([^\n]*) *`.
+The build output contains or matches `\2` depending on whether `\1` matched.
+
+A copy of the source without the error message specifiers is built for the check.
 
 ### `JEGPTestUtilities`
 
 This module includes all other modules.
+
+## Requirements
+
+This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regardless of case.
+
+
+[regex]: https://cmake.org/cmake/help/latest/command/string.html#regex-specification

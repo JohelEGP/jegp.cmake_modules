@@ -1,5 +1,16 @@
 parse:
   additional_commands:
+    _jegp_add_target:
+      pargs:
+        nargs: 1
+        flags:
+        - EXCLUDE_FROM_ALL
+      kwargs:
+        TYPE: 1
+        SOURCES: +
+        COMPILE_OPTIONS: +
+        LINK_LIBRARIES: +
+        PROPERTIES: +
     jegp_add_test:
       pargs:
         nargs: 1+
@@ -9,10 +20,16 @@ parse:
         SOURCES: +
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
-    jegp_add_compiler_error_test:
+    jegp_add_build_error:
       pargs:
         nargs: 1+
       kwargs:
+        AS: 1
+        TYPE: 1
         SOURCE: 1
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
+    _jegp_string:
+      kwargs:
+        JSON: 1
+        FIND: 2
