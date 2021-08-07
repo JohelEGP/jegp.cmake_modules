@@ -32,7 +32,8 @@ This module defines the following function.
 ```
 jegp_add_test(<name>
               [COMPILE_ONLY]
-              [SOURCE <source>]
+              [SOURCE <source> |
+               SOURCES <source>...]
               [COMPILE_OPTIONS <option>...]
               [LINK_LIBRARIES <library>...])
 ```

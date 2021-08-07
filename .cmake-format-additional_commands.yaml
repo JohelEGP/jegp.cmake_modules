@@ -7,6 +7,7 @@ parse:
         - COMPILE_ONLY
       kwargs:
         SOURCE: 1
+        SOURCES: +
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
     jegp_add_compiler_error_test:

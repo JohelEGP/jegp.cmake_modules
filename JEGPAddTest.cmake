@@ -1,15 +1,19 @@
 function(jegp_add_test name)
-  cmake_parse_arguments(JEGP_ADD_TEST "COMPILE_ONLY" "SOURCE" "COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
+  cmake_parse_arguments(JEGP_ADD_TEST "COMPILE_ONLY" "SOURCE" "SOURCES;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
 
-  list(APPEND JEGP_ADD_TEST_SOURCE ${name}.cpp)
-  list(GET JEGP_ADD_TEST_SOURCE 0 source)
+  if(NOT JEGP_ADD_TEST_SOURCE)
+    set(JEGP_ADD_TEST_SOURCE ${name}.cpp)
+  endif()
+  if(NOT JEGP_ADD_TEST_SOURCES)
+    set(JEGP_ADD_TEST_SOURCES ${JEGP_ADD_TEST_SOURCE})
+  endif()
 
   set(test_name ${PROJECT_NAME}_test_${name})
 
   if(JEGP_ADD_TEST_COMPILE_ONLY)
-    add_library(${test_name} OBJECT ${source})
+    add_library(${test_name} OBJECT ${JEGP_ADD_TEST_SOURCES})
   else()
-    add_executable(${test_name} ${source})
+    add_executable(${test_name} ${JEGP_ADD_TEST_SOURCES})
     add_test(${test_name} ${test_name})
   endif()
 
