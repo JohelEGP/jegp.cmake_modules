@@ -1,8 +1,8 @@
-include: ["modules/.detail/.cmake-format-additional_commands.yaml"]
+include: [".cmake-format-additional_commands.yaml", "modules/.detail/.cmake-format-additional_commands.yaml"]
 format:
   line_width: 120
   tab_size: 2
-  max_subgroups_hwrap: 3
+  max_subgroups_hwrap: 4
   max_pargs_hwrap: 6
   max_rows_cmdline: 2
   separate_ctrl_name_with_space: false

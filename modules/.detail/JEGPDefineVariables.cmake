@@ -7,4 +7,5 @@ macro(_jegp_define_variable variable default)
     set("${variable}" "${default}")
   endif()
 endmacro()
+
 _jegp_define_variable("JEGP_${PROJECT_NAME}_NAME_PREFIX" "${PROJECT_NAME}_")

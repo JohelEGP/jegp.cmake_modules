@@ -11,3 +11,12 @@ parse:
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
         PROPERTIES: +
+    _jegp_string:
+      kwargs:
+        SUBSTRING_AFTER: 1
+        SUBSTRING: 1
+        FOUND: 1
+        JSON: 1
+        FIND_ITH: 1
+        VALUE: 1
+        KEYS: 1+
