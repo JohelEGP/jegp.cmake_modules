@@ -46,7 +46,7 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
   A valid target `${PROJECT_NAME}` is also implicitly linked (deprecated).
 
-### `JEGPAddCompilerErrorTest`
+### `JEGPCompilerError`
 
 This module defines the following function.
 
