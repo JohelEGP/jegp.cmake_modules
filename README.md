@@ -32,8 +32,7 @@ This module defines the following function.
 ```
 jegp_add_test(<name>
               [COMPILE_ONLY]
-              [SOURCE <source> |
-               SOURCES <source>...]
+              [SOURCES <source>...]
               [COMPILE_OPTIONS <option>...]
               [LINK_LIBRARIES <library>...])
 ```
@@ -42,7 +41,6 @@ This function adds the executable target `${PROJECT_NAME}_test_${name}`.
 - `COMPILE_ONLY` specifies that it doesn't need to be linked nor run by `ctest`.
 - `SOURCES` specifies its source files in `${CMAKE_CURRENT_SOURCE_DIR}`.
   Defaults to `${name}.cpp`.
-  `SOURCE` is deprecated.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
   A valid target `${PROJECT_NAME}` is also implicitly linked (deprecated).

@@ -1,13 +1,8 @@
 function(jegp_add_test name)
-  cmake_parse_arguments(JEGP_ARG "COMPILE_ONLY" "SOURCE" "SOURCES;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
+  cmake_parse_arguments(JEGP_ARG "COMPILE_ONLY" "" "SOURCES;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
 
-  if(NOT JEGP_ARG_SOURCE)
-    set(JEGP_ARG_SOURCE ${name}.cpp)
-  else()
-    message(DEPRECATION "SOURCE keyword is deprecated in favor of SOURCES.")
-  endif()
-  if(NOT JEGP_ARG_SOURCES)
-    set(JEGP_ARG_SOURCES ${JEGP_ARG_SOURCE})
+  if(NOT JEGP_ARG_SOURCESS)
+    set(JEGP_ARG_SOURCES ${name}.cpp)
   endif()
 
   set(test_name ${PROJECT_NAME}_test_${name})
