@@ -3,6 +3,8 @@ function(jegp_add_test name)
 
   if(NOT JEGP_ARG_SOURCE)
     set(JEGP_ARG_SOURCE ${name}.cpp)
+  else()
+    message(DEPRECATION "SOURCE keyword is deprecated in favor of SOURCES.")
   endif()
   if(NOT JEGP_ARG_SOURCES)
     set(JEGP_ARG_SOURCES ${JEGP_ARG_SOURCE})
