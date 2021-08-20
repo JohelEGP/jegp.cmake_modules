@@ -15,11 +15,6 @@ function(jegp_add_test name)
     add_test(${test_name} ${test_name})
   endif()
 
-  if(TARGET ${PROJECT_NAME})
-    set(implicit_linked_library ${PROJECT_NAME})
-    message(DEPRECATION "Implicitly linking of ${implicit_linked_library} to ${test_name}.")
-  endif()
-
   target_compile_options(${test_name} PRIVATE ${JEGP_ARG_COMPILE_OPTIONS})
-  target_link_libraries(${test_name} PRIVATE ${JEGP_ARG_LINK_LIBRARIES} ${implicit_linked_library})
+  target_link_libraries(${test_name} PRIVATE ${JEGP_ARG_LINK_LIBRARIES})
 endfunction()
