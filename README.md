@@ -21,9 +21,6 @@ for the public headers of the JEGP library `${PROJECT_NAME}`.
 It adds an executable target that builds when the headers are self-contained.
 Otherwise, a build error should give a clue about the problematic headers.
 
-[SF.11]: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained
-"Header files should be self-contained"
-
 The target name is `${PROJECT_NAME}_test_headers`.
 `${PROJECT_NAME}` is a `PRIVATE` linked library of the target.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
@@ -71,3 +68,7 @@ The submatch is what is checked.
 ### `JEGPTestUtilities`
 
 This module includes all other modules.
+
+
+[SF.11]: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained
+"Header files should be self-contained"
