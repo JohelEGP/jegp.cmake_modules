@@ -1,5 +1,5 @@
 function(jegp_add_header_test)
-  include(TestHeaders)
+  include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/TestHeaders.cmake")
 
   set(include_directory ${${PROJECT_NAME}_SOURCE_DIR}/include)
 
