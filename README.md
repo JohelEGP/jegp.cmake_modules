@@ -2,6 +2,10 @@
 
 CMake modules that abstract common functionality in the JEGP libraries.
 
+## Variables
+
+This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regardless of case.
+
 ## Modules
 
 ### `JEGPAddHeaderTest`
