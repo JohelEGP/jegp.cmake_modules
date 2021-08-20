@@ -6,6 +6,13 @@ CMake modules that abstract common functionality in the JEGP libraries.
 
 This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regardless of case.
 
+### Variables that Change Behavior
+
+- `JEGP_<PROJECT-NAME>_NAME_PREFIX`:
+Prefix of names added by these modules.
+When not defined, `${PROJECT_NAME}_` is prefixed.
+_Base name_ refers to the unprefixed added name.
+
 ## Modules
 
 ### `JEGPAddHeaderTest`
@@ -21,7 +28,7 @@ for the public headers of the JEGP library `${PROJECT_NAME}`.
 It adds an executable target that builds when the headers are self-contained.
 Otherwise, a build error should give a clue about the problematic headers.
 
-The target name is `${PROJECT_NAME}_test_headers`.
+The target's base name is `test_headers`.
 `${PROJECT_NAME}` is a `PRIVATE` linked library of the target.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
 in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.
@@ -38,7 +45,7 @@ jegp_add_test(<name>
               [LINK_LIBRARIES <library>...])
 ```
 
-This function adds the executable target `${PROJECT_NAME}_test_${name}`.
+This function adds an executable target with base name `test_${name}`.
 - `COMPILE_ONLY` specifies that it doesn't need to be linked nor run by `ctest`.
 - `SOURCES` specifies its source files in `${CMAKE_CURRENT_SOURCE_DIR}`.
   Defaults to `${name}.cpp`.
