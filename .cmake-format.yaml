@@ -1,3 +1,4 @@
+include: ["modules/.detail/.cmake-format-additional_commands.yaml"]
 format:
   line_width: 120
   tab_size: 2
@@ -19,6 +20,6 @@ format:
   require_valid_layout: false
   layout_passes: {}
 markup:
-  enable_markup: true
+  enable_markup: false
 misc:
   per_command: {}

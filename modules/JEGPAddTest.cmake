@@ -1,3 +1,4 @@
+include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 
 function(jegp_add_test name)
@@ -6,13 +7,18 @@ function(jegp_add_test name)
 
   set(test_name "${JEGP_${PROJECT_NAME}_NAME_PREFIX}test_${name}")
 
+  set(type EXECUTABLE)
   if(_COMPILE_ONLY)
-    add_library(${test_name} OBJECT ${_SOURCES})
-  else()
-    add_executable(${test_name} ${_SOURCES})
+    set(type OBJECT_LIBRARY)
+  endif()
+  _jegp_add_target(
+    ${test_name}
+    TYPE ${type}
+    SOURCES ${_SOURCES}
+    COMPILE_OPTIONS ${_COMPILE_OPTIONS}
+    LINK_LIBRARIES ${_LINK_LIBRARIES})
+
+  if(NOT _COMPILE_ONLY)
     add_test(${test_name} ${test_name})
   endif()
-
-  target_compile_options(${test_name} PRIVATE ${_COMPILE_OPTIONS})
-  target_link_libraries(${test_name} PRIVATE ${_LINK_LIBRARIES})
 endfunction()
