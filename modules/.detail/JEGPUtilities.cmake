@@ -1,0 +1,7 @@
+macro(_jegp_backward variable)
+  if(DEFINED ${variable})
+    set(${variable} ${${variable}} PARENT_SCOPE)
+  else()
+    unset(${variable} PARENT_SCOPE)
+  endif()
+endmacro()
