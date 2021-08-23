@@ -10,6 +10,7 @@ function(jegp_add_test name)
 
   if(_COMPILE_ONLY)
     set(_TYPE "OBJECT_LIBRARY")
+    message(DEPRECATION "Replace COMPILE_ONLY with TYPE OBJECT_LIBRARY.")
   endif()
   _jegp_add_target(
     ${test_name}

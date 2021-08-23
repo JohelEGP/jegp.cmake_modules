@@ -49,7 +49,7 @@ jegp_add_test(<name>
 This function adds a target with base name `test_${name}`.
 - `TYPE` specifies the type of the added target and defaults to `EXECUTABLE`. \
   [ _Note:_ An `OBJECT_LIBRARY` target effectively serves as compile-time test. -- _end note_ ]
-- `COMPILE_ONLY` is equivalent to `TYPE OBJECT_LIBRARY`.
+- `COMPILE_ONLY` is equivalent to `TYPE OBJECT_LIBRARY` (deprecated).
 - `SOURCES` specifies its source files in `${CMAKE_CURRENT_SOURCE_DIR}`.
   Defaults to `${name}.cpp`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
