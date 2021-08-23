@@ -39,14 +39,17 @@ This module defines the following function.
 
 ```
 jegp_add_test(<name>
-              [COMPILE_ONLY]
+              [TYPE {EXECUTABLE | OBJECT_LIBRARY} |
+               COMPILE_ONLY]
               [SOURCES <source>...]
               [COMPILE_OPTIONS <option>...]
               [LINK_LIBRARIES <library>...])
 ```
 
-This function adds an executable target with base name `test_${name}`.
-- `COMPILE_ONLY` specifies that it doesn't need to be linked nor run by `ctest`.
+This function adds a target with base name `test_${name}`.
+- `TYPE` specifies the type of the added target and defaults to `EXECUTABLE`. \
+  [ _Note:_ An `OBJECT_LIBRARY` target effectively serves as compile-time test. -- _end note_ ]
+- `COMPILE_ONLY` is equivalent to `TYPE OBJECT_LIBRARY`.
 - `SOURCES` specifies its source files in `${CMAKE_CURRENT_SOURCE_DIR}`.
   Defaults to `${name}.cpp`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
