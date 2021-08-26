@@ -1,5 +1,10 @@
 parse:
   additional_commands:
+    jegp_add_headers_test:
+      pargs:
+        nargs: 1+
+      kwargs:
+        PRIVATE_REGEXES: +
     jegp_add_test:
       pargs:
         nargs: 1+
