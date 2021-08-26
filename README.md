@@ -8,12 +8,43 @@ This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regard
 
 ### Variables that Change Behavior
 
+- `JEGP_CXX_HEADER_FILE_EXTENSIONS`:
+List of extensions for C++ header files.
+
 - `JEGP_<PROJECT-NAME>_NAME_PREFIX`:
 Prefix of names added by these modules.
 When not defined, `${PROJECT_NAME}_` is prefixed.
 _Base name_ refers to the unprefixed added name.
 
 ## Modules
+
+### `JEGPHeadersTest`
+
+This module defines the following function.
+
+```
+jegp_add_headers_test(<target>...
+                      [PRIVATE_REGEXES <regex>...])
+```
+
+This function enforces [SF.11]
+on the public headers of the targets.
+The headers are determined from
+the `INTERFACE_INCLUDE_DIRECTORIES` property of the targets and
+the `JEGP_CXX_HEADER_FILE_EXTENSIONS` variable,
+excluding headers that [match][] any `PRIVATE_REGEXES`.
+
+A target _`T`_ with base name `headers_test` is added.
+When _`T`_ builds, the public headers are self-contained.
+Invocations that share _`T`_ append headers to the build of _`T`_.
+
+[ _Example:_
+```CMake
+add_library(mylib src/a.cpp)
+target_include_directories(mylib PUBLIC src/)
+jegp_add_headers_test(mylib PRIVATE_REGEXES "detail/;external/")
+```
+-- _end example_ ]
 
 ### `JEGPAddHeaderTest`
 
@@ -72,7 +103,7 @@ The meaning of the other keywords can be inferred from `jegp_add_test`,
 except that `TYPE` defaults to `OBJECT_LIBRARY`.
 
 The error message specifiers are in the source in their expected order of appearance in the build output.
-They match the [regex][] ` *// *error(-regex)?: *([^\n]*) *`.
+They [match][] the regex ` *// *error(-regex)?: *([^\n]*) *`.
 The build output contains or matches `\2` depending on whether `\1` matched.
 A copy of the source without the error message specifiers is built for the check.
 
@@ -86,6 +117,6 @@ This module includes all other modules.
 [SF.11]: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained
 "Header files should be self-contained"
 
-[regex]: https://cmake.org/cmake/help/latest/command/string.html#regex-specification
+[match]: https://cmake.org/cmake/help/latest/command/string.html#regex-match
 
 [`CMAKE_EXPORT_COMPILE_COMMANDS`]: https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html

@@ -8,4 +8,5 @@ macro(_jegp_define_variable variable default)
   endif()
 endmacro()
 
+_jegp_define_variable("JEGP_CXX_HEADER_FILE_EXTENSIONS" "H;h++;hh;hpp;hxx;h;HPP")
 _jegp_define_variable("JEGP_${PROJECT_NAME}_NAME_PREFIX" "${PROJECT_NAME}_")
