@@ -18,7 +18,30 @@ _Base name_ refers to the unprefixed added name.
 
 ## Modules
 
-### `JEGPHeadersTest`
+### Project Modules
+
+#### `JEGPAddModule`
+
+This module defines the following function.
+
+```
+jegp_add_module(<name>
+                [SOURCES <source>...]
+                [COMPILE_OPTIONS <option>...]
+                [LINK_LIBRARIES <library>...])
+```
+
+This function adds the object library `${name}`
+representing a C++ module.
+The meaning of the keywords are the same as for [`jegp_add_test`][].
+
+#### `JEGPProjectModules`
+
+This module includes all project modules.
+
+### Test Modules
+
+#### `JEGPHeadersTest`
 
 This module defines the following function.
 
@@ -46,7 +69,7 @@ jegp_add_headers_test(mylib PRIVATE_REGEXES "detail/;external/")
 ```
 -- _end example_ ]
 
-### `JEGPAddHeaderTest`
+#### `JEGPAddHeaderTest`
 
 This module defines the following function.
 
@@ -64,7 +87,7 @@ The target's base name is `test_headers`.
 The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
 in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.
 
-### `JEGPAddTest`
+#### `JEGPAddTest`
 
 This module defines the following function.
 
@@ -84,7 +107,7 @@ This function adds a target with base name `test_${name}`.
 - `COMPILE_OPTIONS` specifies its `PRIVATE` compile options.
 - `LINK_LIBRARIES` specifies its `PRIVATE` linked libraries.
 
-### `JEGPBuildError`
+#### `JEGPBuildError`
 
 This module defines the following function.
 
@@ -99,7 +122,7 @@ jegp_add_build_error(<name>
 
 This function permits checking that building the source fails with specified error messages.
 The check is done as a test by default; it can also be done at build-time, according to `AS`.
-The meaning of the other keywords can be inferred from `jegp_add_test`,
+The meaning of the other keywords can be inferred from [`jegp_add_test`][],
 except that `TYPE` defaults to `OBJECT_LIBRARY`.
 
 The error message specifiers are in the source in their expected order of appearance in the build output.
@@ -109,10 +132,12 @@ A copy of the source without the error message specifiers is built for the check
 
 _Note:_ `AS BUILD_CHECK` has the limitations of [`CMAKE_EXPORT_COMPILE_COMMANDS`][].
 
-### `JEGPTestUtilities`
+#### `JEGPTestUtilities`
 
-This module includes all other modules.
+This module includes all test modules.
 
+
+[`jegp_add_test`]: #jegpaddtest
 
 [SF.11]: http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained
 "Header files should be self-contained"
