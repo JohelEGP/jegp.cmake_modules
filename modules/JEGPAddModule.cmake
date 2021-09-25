@@ -33,7 +33,8 @@ function(jegp_add_module name)
     add_dependencies(${name} ${object_name})
 
     macro(common_target_calls target)
-      target_compile_options(${target} PUBLIC -Xclang PRIVATE -emit-module-interface INTERFACE "-fmodule-file=${pcm}")
+      target_compile_options(${target} PUBLIC -fmodules -fbuiltin-module-map PRIVATE -Xclang -emit-module-interface
+                             INTERFACE "-fmodule-file=${pcm}")
     endmacro()
 
     common_target_calls(${name})
