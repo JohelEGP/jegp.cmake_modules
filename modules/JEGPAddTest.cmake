@@ -12,8 +12,8 @@ function(jegp_add_test name)
     ${test_name}
     TYPE ${_TYPE}
     SOURCES ${_SOURCES}
-    COMPILE_OPTIONS ${_COMPILE_OPTIONS}
-    LINK_LIBRARIES ${_LINK_LIBRARIES})
+    COMPILE_OPTIONS PRIVATE ${_COMPILE_OPTIONS}
+    LINK_LIBRARIES PRIVATE ${_LINK_LIBRARIES})
 
   if(_TYPE STREQUAL "EXECUTABLE")
     add_test(${test_name} ${test_name})

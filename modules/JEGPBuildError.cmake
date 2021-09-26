@@ -48,8 +48,8 @@ function(jegp_add_build_error name)
     "${build_target}" EXCLUDE_FROM_ALL
     TYPE ${_TYPE}
     SOURCES "${build_source}"
-    COMPILE_OPTIONS ${_COMPILE_OPTIONS}
-    LINK_LIBRARIES ${_LINK_LIBRARIES})
+    COMPILE_OPTIONS PRIVATE ${_COMPILE_OPTIONS}
+    LINK_LIBRARIES PRIVATE ${_LINK_LIBRARIES})
 
   if(_AS STREQUAL "TEST")
     target_sources("${build_target}" PRIVATE "${errors_file}")
@@ -62,8 +62,8 @@ function(jegp_add_build_error name)
       "${dependencies_target}"
       TYPE OBJECT_LIBRARY
       SOURCES "${input_source}" "${dependencies_source}"
-      COMPILE_OPTIONS ${_COMPILE_OPTIONS}
-      LINK_LIBRARIES ${_LINK_LIBRARIES})
+      COMPILE_OPTIONS PRIVATE ${_COMPILE_OPTIONS}
+      LINK_LIBRARIES PRIVATE ${_LINK_LIBRARIES})
 
     add_custom_target("${check_target}" ALL DEPENDS "${success_output}")
   endif()
