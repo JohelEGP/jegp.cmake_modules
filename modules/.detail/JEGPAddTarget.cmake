@@ -1,13 +1,14 @@
 include("${CMAKE_CURRENT_LIST_DIR}/JEGPParseArguments.cmake")
 
 function(_jegp_add_target name)
-  _jegp_parse_arguments("" "EXCLUDE_FROM_ALL" "TYPE{EXECUTABLE|OBJECT_LIBRARY}"
+  _jegp_parse_arguments("" "EXCLUDE_FROM_ALL" "TYPE{EXECUTABLE|INTERFACE_LIBRARY|OBJECT_LIBRARY}"
                         "SOURCES;COMPILE_OPTIONS;LINK_LIBRARIES;PROPERTIES" ${ARGN})
 
   if(_TYPE STREQUAL "EXECUTABLE")
     add_executable(${name} ${_SOURCES})
-  elseif(_TYPE STREQUAL "OBJECT_LIBRARY")
-    add_library(${name} OBJECT ${_SOURCES})
+  else()
+    string(REPLACE "_LIBRARY" #[[WITH]] "" #[[OUT]] library_type #[[IN]] "${_TYPE}")
+    add_library(${name} ${library_type} ${_SOURCES})
   endif()
 
   if(_COMPILE_OPTIONS)

@@ -36,6 +36,17 @@ representing a C++ module.
 The meaning of the keywords are the same as for [`jegp_add_test`][],
 except that `PRIVATE` is not implied.
 
+#### `JEGPTargetLinkHeaderUnits`
+
+This module defines the following function.
+
+```
+jegp_target_link_header_units(<target> <header>...)
+```
+
+This function specifies header units to use
+when linking `${target}` and/or its dependents.
+
 #### `JEGPProjectModules`
 
 This module includes all project modules.
