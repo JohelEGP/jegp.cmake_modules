@@ -27,7 +27,11 @@ function(jegp_add_module name)
 
     target_compile_options(${name} PUBLIC -fmodules-ts INTERFACE "-fmodule-mapper=${module_mapper_file}")
 
-    file(APPEND "${module_mapper_file}" "${name} ${CMAKE_CURRENT_BINARY_DIR}/gcm.cache/${name}.gcm\n")
+    set(gcm_filename "${CMAKE_CURRENT_BINARY_DIR}/gcm.cache/${name}.gcm")
+
+    file(APPEND "${module_mapper_file}" "${name} ${gcm_filename}\n")
+
+    set_source_files_properties(${_SOURCES} PROPERTIES OBJECT_OUTPUTS "${gcm_filename}")
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_library(${object_name} OBJECT "${_SOURCES}")
     add_dependencies(${name} ${object_name})
