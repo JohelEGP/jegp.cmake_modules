@@ -33,7 +33,8 @@ jegp_add_module(<name>
 
 This function adds the object library `${name}`
 representing a C++ module.
-The meaning of the keywords are the same as for [`jegp_add_test`][].
+The meaning of the keywords are the same as for [`jegp_add_test`][],
+except that `PRIVATE` is not implied.
 
 #### `JEGPProjectModules`
 
