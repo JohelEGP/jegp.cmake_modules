@@ -1,5 +1,15 @@
 parse:
   additional_commands:
+    jegp_add_module:
+      pargs:
+        nargs: 1
+      kwargs:
+        SOURCES: +
+        COMPILE_OPTIONS: +
+        LINK_LIBRARIES: +
+    jegp_target_link_header_units:
+      pargs:
+        nargs: 1+
     jegp_add_headers_test:
       pargs:
         nargs: 1+
