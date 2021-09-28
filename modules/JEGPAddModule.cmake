@@ -22,7 +22,10 @@ function(jegp_add_module name)
     TYPE OBJECT_LIBRARY
     SOURCES "$<$<CXX_COMPILER_ID:GNU>:${_SOURCES}>" ${pcm}
     COMPILE_OPTIONS ${_COMPILE_OPTIONS}
-    LINK_LIBRARIES ${_LINK_LIBRARIES})
+    LINK_LIBRARIES
+      ${_LINK_LIBRARIES} INTERFACE
+      $<$<CXX_COMPILER_ID:GNU>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
+  )
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     include("${script_dir}/GNUModuleMapper.cmake")
