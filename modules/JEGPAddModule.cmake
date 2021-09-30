@@ -2,49 +2,37 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 
+set(_jegp_modules_script_dir "${CMAKE_CURRENT_LIST_DIR}/.detail/CppModules")
+include("${_jegp_modules_script_dir}/Common.cmake")
+
+file(MAKE_DIRECTORY "${_jegp_modules_binary_dir}")
+
 function(jegp_add_module name)
   _jegp_parse_arguments("" "" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
 
-  set(script_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/CppModules")
-  set(pcm_file "${CMAKE_CURRENT_BINARY_DIR}/PCM/${name}.pcm")
-  set(pcm_name "_jegp_module_object_${JEGP_${PROJECT_NAME}_NAME_PREFIX}${name}")
+  set(compiled_module_file "${_jegp_modules_binary_dir}/${name}${JEGP_CMI_EXTENSION}")
+  set_source_files_properties("${compiled_module_file}" PROPERTIES GENERATED TRUE)
 
   _jegp_add_target(
     ${name}
     TYPE OBJECT_LIBRARY
-    SOURCES ${_SOURCES}
-    COMPILE_OPTIONS
-      ${_COMPILE_OPTIONS} PUBLIC $<$<CXX_COMPILER_ID:Clang>:-fmodules -fbuiltin-module-map> INTERFACE
-      $<$<NOT:$<STREQUAL:${pcm_name},$<TARGET_PROPERTY:NAME>>>:$<$<CXX_COMPILER_ID:Clang>:-fmodule-file=${pcm_file}>>
-    LINK_LIBRARIES
-      ${_LINK_LIBRARIES} INTERFACE
-      $<$<CXX_COMPILER_ID:GNU>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
-  )
+    SOURCES ${_SOURCES} "${compiled_module_file}"
+    COMPILE_OPTIONS ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options} INTERFACE
+                    $<$<CXX_COMPILER_ID:Clang>:-fprebuilt-module-path=${_jegp_modules_binary_dir}>
+    LINK_LIBRARIES ${_LINK_LIBRARIES} INTERFACE
+                   $<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>
+    PROPERTIES EXPORT_COMPILE_COMMANDS TRUE)
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    include("${script_dir}/GNUModuleMapper.cmake")
-
-    target_compile_options(${name} PUBLIC -fmodules-ts INTERFACE "${jegp_gnu_module_mapper_option}")
-
-    set(gcm_filename "${CMAKE_CURRENT_BINARY_DIR}/gcm.cache/${name}.gcm")
-
-    jegp_gnu_module_mapper_add_mapping("${name}" "${gcm_filename}")
-
-    set_source_files_properties(${_SOURCES} PROPERTIES OBJECT_OUTPUTS "${gcm_filename}")
+    _jegp_modules_gnu_map("${name}" "${compiled_module_file}")
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    _jegp_add_target(
-      ${pcm_name}
-      TYPE OBJECT_LIBRARY
-      SOURCES ${_SOURCES}
-      COMPILE_OPTIONS ${_COMPILE_OPTIONS} PRIVATE -Xclang -emit-module-interface
-      LINK_LIBRARIES ${_LINK_LIBRARIES} PUBLIC ${name})
+    get_source_file_property(source "${_SOURCES}" LOCATION)
 
-    _jegp_set_script_directory("${script_dir}")
-    _jegp_set_script_command(SymlinkClangObjectAsPCM "INPUT=$<TARGET_OBJECTS:${pcm_name}>" "OUTPUT=${pcm_file}")
+    _jegp_set_script_directory("${_jegp_modules_script_dir}")
+    _jegp_set_script_command(CompileCMI "SOURCE=${source}" "BUILD_DIR=${CMAKE_BINARY_DIR}"
+                             "COMPILED_MODULE_FILE=${compiled_module_file}")
 
-    add_custom_command(OUTPUT "${pcm_file}" COMMAND ${SymlinkClangObjectAsPCM} DEPENDS $<TARGET_OBJECTS:${pcm_name}>)
-
-    target_sources(${name} INTERFACE "${pcm_file}")
+    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI})
   endif()
 endfunction()
