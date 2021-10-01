@@ -2,14 +2,14 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 
-set(_jegp_modules_script_dir "${CMAKE_CURRENT_LIST_DIR}/.detail/CppModules")
-include("${_jegp_modules_script_dir}/Common.cmake")
-
-file(MAKE_DIRECTORY "${_jegp_modules_binary_dir}")
-
 function(jegp_add_module name)
   _jegp_parse_arguments("" "" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
+
+  set(_jegp_modules_script_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/CppModules")
+  include("${_jegp_modules_script_dir}/Common.cmake")
+
+  file(MAKE_DIRECTORY "${_jegp_modules_binary_dir}")
 
   set(compiled_module_file "${_jegp_modules_binary_dir}/${name}${JEGP_CMI_EXTENSION}")
   set_source_files_properties("${compiled_module_file}" PROPERTIES GENERATED TRUE)

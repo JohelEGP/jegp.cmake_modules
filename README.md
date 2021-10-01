@@ -16,6 +16,9 @@ Prefix of names added by these modules.
 When not defined, `${PROJECT_NAME}_` is prefixed.
 _Base name_ refers to the unprefixed added name.
 
+- `JEGP_SYSTEM_MODULES_CACHE`:
+Cache path of the system's modules.
+
 ## Modules
 
 ### Project Modules
