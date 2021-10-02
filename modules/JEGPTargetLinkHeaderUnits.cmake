@@ -27,9 +27,9 @@ function(jegp_target_link_header_units target #[[<header>...]])
 
     if(EXISTS "${compiled_header_unit}")
       execute_process(COMMAND ${GNUAddMapping} COMMAND_ERROR_IS_FATAL ANY)
+    else()
+      add_custom_target(${name} DEPENDS "${compiled_header_unit}")
     endif()
-
-    add_custom_target(${name} DEPENDS "${compiled_header_unit}")
   endfunction()
 
   foreach(header IN LISTS ARGN)
@@ -39,6 +39,8 @@ function(jegp_target_link_header_units target #[[<header>...]])
       add_header_unit(${header_unit} "${header}")
     endif()
 
-    add_dependencies(${target} ${header_unit})
+    if(TARGET ${header_unit})
+      add_dependencies(${target} ${header_unit})
+    endif()
   endforeach()
 endfunction()
