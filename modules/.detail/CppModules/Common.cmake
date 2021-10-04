@@ -2,7 +2,11 @@ include("${CMAKE_CURRENT_LIST_DIR}/../JEGPDefineVariables.cmake")
 
 set(_jegp_modules_binary_dir "${CMAKE_BINARY_DIR}/JEGPModules")
 set(_jegp_system_modules_cache_default "${_jegp_modules_binary_dir}/system")
-_jegp_define_variable("JEGP_SYSTEM_MODULES_CACHE" "${_jegp_system_modules_cache_default}")
+if(DEFINED JEGP_SYSTEM_MODULES_CACHE)
+  message(WARNING "JEGP_SYSTEM_MODULES_CACHE is deprecated. Set JEGP_CXX_MODULES_SYSTEM_CACHE.")
+endif()
+_jegp_define_variable("JEGP_CXX_MODULES_SYSTEM_CACHE" "${_jegp_system_modules_cache_default}")
+_jegp_define_variable("JEGP_SYSTEM_MODULES_CACHE" "${JEGP_CXX_MODULES_SYSTEM_CACHE}")
 cmake_path(IS_PREFIX JEGP_SYSTEM_MODULES_CACHE "${_jegp_system_modules_cache_default}"
            _jegp_system_modules_implicit_cache)
 set(_jegp_header_units_binary_dir "${JEGP_SYSTEM_MODULES_CACHE}/header_units")

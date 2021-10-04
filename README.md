@@ -16,8 +16,12 @@ Prefix of names added by these modules.
 When not defined, `${PROJECT_NAME}_` is prefixed.
 _Base name_ refers to the unprefixed added name.
 
+- `JEGP_CXX_MODULES_SYSTEM_CACHE`:
+Cache path of the system's C++ modules.
+
 - `JEGP_SYSTEM_MODULES_CACHE`:
-Cache path of the system's modules.
+Same as `JEGP_CXX_MODULES_SYSTEM_CACHE`.
+Deprecated.
 
 ## Modules
 
