@@ -33,14 +33,17 @@ This module defines the following function.
 
 ```
 jegp_add_module(<name>
+                [IMPORTABLE_HEADER]
                 [SOURCES <source>...]
                 [COMPILE_OPTIONS <option>...]
                 [LINK_LIBRARIES <library>...])
 ```
 
 This function adds the object library `${name}`
-representing a C++ module.
-The meaning of the keywords are the same as for [`jegp_add_test`][],
+representing a C++
+module (default) or
+importable header (when `IMPORTABLE_HEADER` is specified).
+The meaning of the other keywords are the same as for [`jegp_add_test`][],
 except that `PRIVATE` is not implied.
 
 #### `JEGPTargetLinkHeaderUnits`
