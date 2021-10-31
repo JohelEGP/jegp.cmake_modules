@@ -38,6 +38,7 @@ function(jegp_add_module name)
       add_custom_command(OUTPUT "${touched_object_files}" COMMAND "${CMAKE_COMMAND}" -E touch $<TARGET_OBJECTS:${name}>
                                                                   "${touched_object_files}")
       add_library(_jegp_touch_object_file_for_${name} OBJECT "${touched_object_files}")
+      add_dependencies(_jegp_touch_object_file_for_${name} ${name})
       target_link_libraries(${name} INTERFACE _jegp_touch_object_file_for_${name})
 
       get_source_file_property(name "${_SOURCES}" LOCATION)
