@@ -42,7 +42,7 @@ function(jegp_add_build_error name)
   add_custom_command(OUTPUT "${build_source}" COMMAND ${GenerateBuildSource} DEPENDS "${input_source}")
   add_custom_command(OUTPUT "${errors_file}" COMMAND ${GenerateErrorsFile} DEPENDS "${input_source}")
   add_custom_command(OUTPUT "${success_output}" COMMAND ${Check} COMMAND "${CMAKE_COMMAND}" -E touch "${success_output}"
-                     DEPENDS "$<TARGET_OBJECTS:${dependencies_target}>" "${build_source}" "${errors_file}")
+                     DEPENDS "${dependencies_target}" "${build_source}" "${errors_file}")
 
   _jegp_add_target(
     "${build_target}" EXCLUDE_FROM_ALL
