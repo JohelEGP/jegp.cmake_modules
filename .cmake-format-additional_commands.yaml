@@ -7,6 +7,28 @@ parse:
             PUBLIC: +
             INTERFACE: +
             PRIVATE: +
+    jegp_add_standardese_sources:
+      pargs:
+        nargs: 1
+        flags:
+        - EXCLUDE_FROM_ALL
+      kwargs:
+        LIBRARIES: +
+        APPENDICES: +
+        EXTENSIONS: +
+        CHECKED: 1
+        PDF: &standardese_pdf
+          pargs:
+            flags:
+            - EXCLUDE_FROM_MAIN
+          kwargs:
+            PATH: 1
+        HTML:
+          <<: *standardese_pdf
+          kwargs:
+            SECTION_FILE_STYLE: 1
+            LATEX_REGEX_REPLACE: +
+            HTML_REGEX_REPLACE: +
     jegp_add_module:
       pargs: &jegp_add_module_pargs
         nargs: 1
