@@ -35,6 +35,11 @@ Prefix of names added by some of these modules.
 When not defined, `${PROJECT_NAME}_` is prefixed.
 _Base name_ refers to the unprefixed added name.
 
+- `JEGP_STANDARDESE_SOURCES_GIT_REPOSITORY`,
+  `JEGP_STANDARDESE_SOURCES_GIT_TAG`:
+Default to values corresponding to
+https://github.com/JohelEGP/draft/tree/standardese_sources_base.
+
 ### Variables for Languages
 
 - `JEGP_CXX2_FLAGS`:
@@ -42,6 +47,102 @@ Cpp2 flags.
 The semantics are those of [`CMAKE_<LANG>_FLAGS`][].
 
 ## Modules
+
+### Documentations Modules
+
+#### `JEGPAddStandardeseSources`
+
+This module defines the following function.
+
+```
+jegp_add_standardese_sources(<name>
+                             LIBRARIES <source>...
+                             [APPENDICES <source>...]
+                             [EXTENSIONS <source>...]
+                             [CHECKED <condition>]
+                             [PDF_PATH <pdf_path>]
+                             [HTML_PATH <html_path>]
+                             [EXCLUDE_PDF_FROM_MAIN]
+                             [EXCLUDE_HTML_FROM_MAIN]
+                             [EXCLUDE_FROM_ALL])
+```
+
+This function adds the external project `<name>`.
+`<name>` processes, as specified below, all given `<source>`,
+which are [stem][]s existing in `${CMAKE_CURRENT_SOURCE_DIR}`.
+If `<pdf_path>` or `<html_path>` is specified,
+from the processed sources, `<name>` respectively
+- outputs C++ Working Draft-like [PDF][CPP-WD-LIKE-PDF] or [HTML][CPP-WD-LIKE-HTML] documentations, and
+- adds step target `<name>-pdf` or `<name>-html` that drives the output.
+
+The [C++ Standard Draft Sources][] has scripts
+to check the input sources and output of building the PDF.
+The `<condition>` defaults to `FALSE` and determines, via `if`, whether the scripts are used.
+
+`EXCLUDE_FROM_ALL` specifies the argument of the `EXCLUDE_FROM_ALL` keyword to `<name>`.
+`EXCLUDE_*_FROM_MAIN` specifies the argument of the `EXCLUDE_FROM_MAIN` keyword to the respective step target.
+
+##### Process
+
+`<name>` configures [C++ Standard Draft Sources][] via the patched fork specified by
+the `JEGP_STANDARDESE_SOURCES_GIT_REPOSITORY` and `JEGP_STANDARDESE_SOURCES_GIT_TAG` variables.
+
+All given `<source>` are copied to alongside a copy of the sources of the patched fork's clone.
+The default fork has empty `macros_extensions.tex` and `bibliography.tex`
+to be overwritten by this copy step;
+they are respectively included after `macros.tex` and before `back.tex`,
+and should be specified via the `EXTENSIONS` keyword.
+
+Unordered with the above,
+the copies of `config.tex`, `std.tex`, and `check-source.sh`
+have these variables substituted
+as if by [`configure_file`][]'s `@ONLY` mode.
+
+| Variable              | Meaning                                                             |
+| --------------------- | ------------------------------------------------------------------- |
+| pdf_title             | Title of the PDF.                                                   |
+| page_license          | License or copyright of the documentations.                         |
+| first_library_chapter | Stable label of the first library chapter.                          |
+| last_library_chapter  | Stable label of the last library chapter.                           |
+
+| Variable                 | Default string value                      |
+| ------------------------ | ----------------------------------------- |
+| pdf_subject              | `${PROJECT_NAME}`                         |
+| pdf_creator              | The `user.name` of Git's configuration.   |
+| document_number          | `\unspec`                                 |
+| previous_document_number | `\unspec`                                 |
+| release_date             | `\today`                                  |
+| reply_to_header          | `Reply at`                                |
+| reply_to                 | `\url{${PROJECT_HOMEPAGE_URL}}`           |
+| cover_title              | `${pdf_title}`                            |
+| cover_footer             | Same as the C++ WD.                       |
+| check_comment_alignment  | `false`                                   |
+
+Additionally, `std.tex` is configured to input
+all library and appendix `<source>` in the input order.
+`check-source.sh` is similarly configured for all library `<source>`.
+
+After copying and configuring, if specified,
+the check script for the sources is run.
+
+`<name>-pdf` builds the PDF.
+If successfully built and checked (if required),
+it is copied to `<pdf_path>` relative to `${CMAKE_CURRENT_BINARY_DIR}`.
+
+##### Conveniences
+
+The default fork also includes the following conveniences:
+
+- Modules support through commands parallel to header commands.
+  + Indexing commands and accompanying `\printindex` in `back.tex`.
+    > ```LaTeX
+    > % index for library modules
+    > \newcommand{\libmodule}[1]{\indexmdl{#1}\tcode{#1}}
+    > \newcommand{\indexmodule}[1]{\index[moduleindex]{\idxmdl{#1}|idxbfpage}}
+    > \newcommand{\libmoduledef}[1]{\indexmodule{#1}\tcode{#1}}
+    > \newcommand{\libmodulerefx}[2]{\libmodule{#1}\iref{#2}}
+    > ```
+  + `modularlibsumtab`, like `libsumtab`.
 
 ### Project Modules
 
@@ -227,6 +328,16 @@ _Note:_ `AS BUILD_CHECK` has the limitations of [`CMAKE_EXPORT_COMPILE_COMMANDS`
 
 This module includes all test modules.
 
+
+[CPP-WD-LIKE-PDF]: https://wg21.link/std
+
+[CPP-WD-LIKE-HTML]: https://wg21.link/draft
+
+[C++ Standard Draft Sources]: https://github.com/cplusplus/draft
+
+[`configure_file`]: https://cmake.org/cmake/help/latest/command/configure_file.html
+
+[stem]: https://cmake.org/cmake/help/latest/command/cmake_path.html#stem-def
 
 [`jegp_add_test`]: #jegpaddtest
 

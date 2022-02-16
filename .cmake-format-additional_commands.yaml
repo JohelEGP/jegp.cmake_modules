@@ -7,6 +7,20 @@ parse:
             PUBLIC: +
             INTERFACE: +
             PRIVATE: +
+    jegp_add_standardese_sources:
+      pargs:
+        nargs: 1
+        flags:
+        - EXCLUDE_PDF_FROM_MAIN
+        - EXCLUDE_HTML_FROM_MAIN
+        - EXCLUDE_FROM_ALL
+      kwargs:
+        LIBRARIES: +
+        APPENDICES: +
+        EXTENSIONS: +
+        CHECKED: 1
+        PDF_PATH: 1
+        HTML_PATH: 1
     jegp_add_module:
       pargs: &jegp_add_module_pargs
         nargs: 1
