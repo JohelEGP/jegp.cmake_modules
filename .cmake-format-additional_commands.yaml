@@ -1,12 +1,19 @@
 parse:
   additional_commands:
+    _jegp_common_yaml_anchors:
+      kwargs:
+        PUBLIC_INTERFACE_PRIVATE: &public_interface_private
+          kwargs:
+            PUBLIC: +
+            INTERFACE: +
+            PRIVATE: +
     jegp_add_module:
       pargs:
         nargs: 1
       kwargs:
         SOURCES: +
-        COMPILE_OPTIONS: +
-        LINK_LIBRARIES: +
+        COMPILE_OPTIONS: *public_interface_private
+        LINK_LIBRARIES: *public_interface_private
     jegp_target_link_header_units:
       pargs:
         nargs: 1+
