@@ -28,7 +28,7 @@ function(jegp_add_module name)
       INTERFACE
       $<$<CXX_COMPILER_ID:Clang>:-fprebuilt-module-path=${_jegp_modules_binary_dir}>
       PRIVATE
-      $<$<AND:$<CXX_COMPILER_ID:GNU>,$<BOOL:${_IMPORTABLE_HEADER}>>:-x;c++-header>
+      $<$<CXX_COMPILER_ID:GNU,Clang>:$<IF:$<BOOL:${_IMPORTABLE_HEADER}>,-x;c++-header,-x;c++>>
     LINK_LIBRARIES
       ${_LINK_LIBRARIES}
       INTERFACE
