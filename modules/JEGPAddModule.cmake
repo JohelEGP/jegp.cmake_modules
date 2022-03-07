@@ -32,7 +32,7 @@ function(jegp_add_module name)
     LINK_LIBRARIES
       ${_LINK_LIBRARIES}
       INTERFACE
-      $<$<AND:$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>,$<NOT:$<BOOL:${_IMPORTABLE_HEADER}>>>:$<TARGET_OBJECTS:${name}>>
+      $<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>
     PROPERTIES EXPORT_COMPILE_COMMANDS TRUE)
   set_target_properties(${name} PROPERTIES JEGP_COMPILED_MODULE_FILE "${compiled_module_file}"
                                            EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE")
