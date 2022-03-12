@@ -10,6 +10,8 @@ parse:
     jegp_add_module:
       pargs:
         nargs: 1
+        flags:
+        - IMPORTABLE_HEADER
       kwargs:
         SOURCES: +
         COMPILE_OPTIONS: *public_interface_private
@@ -28,6 +30,7 @@ parse:
         flags:
         - COMPILE_ONLY
       kwargs:
+        TYPE: 1
         SOURCES: +
         COMPILE_OPTIONS: +
         LINK_LIBRARIES: +
