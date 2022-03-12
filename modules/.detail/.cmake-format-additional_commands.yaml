@@ -1,5 +1,12 @@
 parse:
   additional_commands:
+    _jegp_common_yaml_anchors:
+      kwargs:
+        PUBLIC_INTERFACE_PRIVATE: &public_interface_private
+          kwargs:
+            PUBLIC: +
+            INTERFACE: +
+            PRIVATE: +
     _jegp_add_target:
       pargs:
         nargs: 1
@@ -8,15 +15,21 @@ parse:
       kwargs:
         TYPE: 1
         SOURCES: +
-        COMPILE_OPTIONS: +
-        LINK_LIBRARIES: +
+        COMPILE_OPTIONS: *public_interface_private
+        LINK_LIBRARIES: *public_interface_private
         PROPERTIES: +
     _jegp_string:
       kwargs:
-        SUBSTRING_AFTER: 1
-        SUBSTRING: 1
-        FOUND: 1
-        JSON: 1
-        FIND_ITH: 1
-        VALUE: 1
-        KEYS: 1+
+        SUBSTRING_AFTER:
+          pargs:
+            nargs: 1
+          kwargs:
+            SUBSTRING: 1
+            FOUND: 1
+        JSON:
+          pargs:
+            nargs: 1
+          kwargs:
+            FIND_ITH: 1
+            VALUE: 1
+            KEYS: 1+

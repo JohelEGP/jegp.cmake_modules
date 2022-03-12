@@ -22,17 +22,13 @@ function(jegp_add_module name)
     TYPE OBJECT_LIBRARY
     SOURCES ${_SOURCES} "${compiled_module_file}"
     COMPILE_OPTIONS
-      ${_COMPILE_OPTIONS}
-      PUBLIC
-      ${_jegp_modules_compile_options}
-      INTERFACE
-      $<$<CXX_COMPILER_ID:Clang>:-fprebuilt-module-path=${_jegp_modules_binary_dir}>
-      PRIVATE
-      $<$<CXX_COMPILER_ID:GNU,Clang>:$<IF:$<BOOL:${_IMPORTABLE_HEADER}>,-x;c++-header,-x;c++>>
+      ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
+      INTERFACE $<$<CXX_COMPILER_ID:Clang>:-fprebuilt-module-path=${_jegp_modules_binary_dir}>
+      PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:$<IF:$<BOOL:${_IMPORTABLE_HEADER}>,-x;c++-header,-x;c++>>
     LINK_LIBRARIES
       ${_LINK_LIBRARIES}
       INTERFACE
-      $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
+        $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
     PROPERTIES EXPORT_COMPILE_COMMANDS TRUE)
   set_target_properties(${name} PROPERTIES JEGP_COMPILED_MODULE_FILE "${compiled_module_file}"
                                            EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE")
