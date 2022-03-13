@@ -17,14 +17,23 @@ function(jegp_add_module name)
   set(compiled_module_file "${_jegp_modules_binary_dir}/${name}${JEGP_CMI_EXTENSION}")
   set_source_files_properties("${compiled_module_file}" PROPERTIES GENERATED TRUE)
 
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    list(APPEND _jegp_modules_compile_options INTERFACE -fprebuilt-module-path=${_jegp_modules_binary_dir})
+  endif()
+
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    unset(suffix)
+    if(_IMPORTABLE_HEADER)
+      set(suffix -header)
+    endif()
+    list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
+  endif()
+
   _jegp_add_target(
     ${name}
     TYPE OBJECT_LIBRARY
     SOURCES ${_SOURCES} "${compiled_module_file}"
-    COMPILE_OPTIONS
-      ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
-      INTERFACE $<$<CXX_COMPILER_ID:Clang>:-fprebuilt-module-path=${_jegp_modules_binary_dir}>
-      PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:$<IF:$<BOOL:${_IMPORTABLE_HEADER}>,-x;c++-header,-x;c++>>
+    COMPILE_OPTIONS ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
     LINK_LIBRARIES
       ${_LINK_LIBRARIES}
       INTERFACE
