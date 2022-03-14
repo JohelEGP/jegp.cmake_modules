@@ -15,9 +15,10 @@ function(jegp_add_module name)
   file(MAKE_DIRECTORY "${_jegp_modules_binary_dir}")
 
   set(compiled_module_file "${_jegp_modules_binary_dir}/${name}${JEGP_CMI_EXTENSION}")
-  set_source_files_properties("${compiled_module_file}" PROPERTIES GENERATED TRUE)
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set_source_files_properties("${_SOURCES}" PROPERTIES OBJECT_OUTPUTS "${compiled_module_file}")
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     list(APPEND _jegp_modules_compile_options INTERFACE -fprebuilt-module-path=${_jegp_modules_binary_dir})
   endif()
 
@@ -32,7 +33,7 @@ function(jegp_add_module name)
   _jegp_add_target(
     ${name}
     TYPE OBJECT_LIBRARY
-    SOURCES ${_SOURCES} "${compiled_module_file}"
+    SOURCES ${_SOURCES}
     COMPILE_OPTIONS ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
     LINK_LIBRARIES
       ${_LINK_LIBRARIES}
@@ -62,6 +63,7 @@ function(jegp_add_module name)
                              "COMPILED_MODULE_FILE=${compiled_module_file}")
 
     add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS $<TARGET_OBJECTS:${name}>)
+    target_sources(${name} PRIVATE "${compiled_module_file}")
   endif()
 endfunction()
 
