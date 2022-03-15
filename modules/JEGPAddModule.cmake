@@ -2,8 +2,31 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 
+# Implies "is a module".
 define_property(TARGET PROPERTY JEGP_COMPILED_MODULE_FILE BRIEF_DOCS "File of the CMI; PCM (Clang) or GCM (GCC)."
                 FULL_DOCS "The source location of the module unit's Compiled Module Interface.")
+
+# Implies "is a named module".
+define_property(TARGET PROPERTY _JEGP_MODULE_NAME BRIEF_DOCS "Module name." FULL_DOCS "_module-name_.")
+
+define_property(GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS BRIEF_DOCS "Targets of added named modules."
+                FULL_DOCS "Buildsystem targets of named modules added via `jegp_add_module`.")
+
+# Sets `${out_module}` to the _module-name_ in the _module-declaration_s of `"${source}"`.
+function(_jegp_get_module_name source out_module)
+  set(module_declaration ".*export +module +(.+) *;.*")
+  file(STRINGS "${source}" module_name REGEX "${module_declaration}")
+  list(TRANSFORM module_name REPLACE "${module_declaration}" "\\1")
+  set(${out_module} "${module_name}" PARENT_SCOPE)
+endfunction()
+
+# Sets `${out_modules}` to the list of _module-name_s in the _module-import-declaration_s of `"${source}"`.
+function(_jegp_get_directly_imported_modules source out_modules)
+  set(import_line ".*import +([^\"<>]+) *;.*")
+  file(STRINGS "${source}" imported_modules REGEX "${import_line}")
+  list(TRANSFORM imported_modules REPLACE "${import_line}" "\\1")
+  set(${out_modules} "${imported_modules}" PARENT_SCOPE)
+endfunction()
 
 function(jegp_add_module name)
   _jegp_parse_arguments("" "IMPORTABLE_HEADER" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
@@ -39,9 +62,14 @@ function(jegp_add_module name)
       ${_LINK_LIBRARIES}
       INTERFACE
         $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
-    PROPERTIES EXPORT_COMPILE_COMMANDS TRUE)
-  set_target_properties(${name} PROPERTIES JEGP_COMPILED_MODULE_FILE "${compiled_module_file}"
-                                           EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE")
+    PROPERTIES EXPORT_COMPILE_COMMANDS TRUE #
+               JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
+  set_target_properties(${name} PROPERTIES EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE;_JEGP_MODULE_NAME")
+  if(NOT _IMPORTABLE_HEADER)
+    _jegp_get_module_name("${_SOURCES}" module_name)
+    set_target_properties(${name} PROPERTIES _JEGP_MODULE_NAME "${module_name}")
+    set_property(GLOBAL APPEND PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS ${name})
+  endif()
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(_IMPORTABLE_HEADER)
@@ -68,6 +96,18 @@ function(jegp_add_module name)
 endfunction()
 
 function(_jegp_module_dependency_scan)
+  # Sets ${key_prefix}_${module_name}_target to the target of ${module_name}.
+  # Sets ${key_prefix}_${module_name}_cmi to the CMI of ${module_name}.
+  function(set_mappings_from_module_name key_prefix)
+    get_property(buildsystem_named_module_targets GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS)
+    foreach(target IN LISTS buildsystem_named_module_targets)
+      get_target_property(module_name ${target} _JEGP_MODULE_NAME)
+      get_target_property(cmi ${target} JEGP_COMPILED_MODULE_FILE)
+      set(${key_prefix}_${module_name}_target ${target} PARENT_SCOPE)
+      set(${key_prefix}_${module_name}_cmi "${cmi}" PARENT_SCOPE)
+    endforeach()
+  endfunction()
+
   function(set_directory_module_dependencies directory)
     function(get_source_locations out_source_locations)
       function(get_targets out_targets)
@@ -99,20 +139,12 @@ function(_jegp_module_dependency_scan)
     endfunction()
 
     function(set_source_module_dependencies #[[<source_locations>...]])
-      # Sets `${out_modules}` to the list of _module-name_s in the _module-import-declaration_s of `"${source}"`.
-      function(get_directly_imported_modules source_location out_modules)
-        set(import_line ".*import *([^\"<>]+) *;.*")
-        file(STRINGS "${source_location}" imported_modules REGEX "${import_line}")
-        list(TRANSFORM imported_modules REPLACE "${import_line}" "\\1")
-        set(${out_modules} "${imported_modules}" PARENT_SCOPE)
-      endfunction()
-
       foreach(source_location IN LISTS ARGV)
-        get_directly_imported_modules("${source_location}" directly_imported_modules)
+        _jegp_get_directly_imported_modules("${source_location}" directly_imported_modules)
         foreach(directly_imported_module IN LISTS directly_imported_modules)
-          if(TARGET ${directly_imported_module})
-            get_target_property(cmi ${directly_imported_module} JEGP_COMPILED_MODULE_FILE)
-            set_property(SOURCE "${source_location}" DIRECTORY "${directory}" APPEND PROPERTY OBJECT_DEPENDS "${cmi}")
+          if(TARGET ${_jegp_${directly_imported_module}_target})
+            set_property(SOURCE "${source_location}" DIRECTORY "${directory}" APPEND
+                         PROPERTY OBJECT_DEPENDS "${_jegp_${directly_imported_module}_cmi}")
           endif()
         endforeach()
         get_source_file_property(object_depends "${source_location}" DIRECTORY "${directory}" OBJECT_DEPENDS)
@@ -128,6 +160,7 @@ function(_jegp_module_dependency_scan)
     set_source_module_dependencies(${source_locations})
   endfunction()
 
+  set_mappings_from_module_name("_jegp")
   get_directory_property(subdirectories SUBDIRECTORIES)
   foreach(directory IN ITEMS "${CMAKE_SOURCE_DIR}" LISTS subdirectories)
     set_directory_module_dependencies("${directory}")
