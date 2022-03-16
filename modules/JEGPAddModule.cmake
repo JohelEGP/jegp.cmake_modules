@@ -170,7 +170,7 @@ function(_jegp_module_dependency_scan)
 
     while(unlisted_directories)
       list(POP_FRONT unlisted_directories directory)
-      if(NOT EXISTS "${directory}")
+      if(NOT directory)
         continue()
       endif()
 
