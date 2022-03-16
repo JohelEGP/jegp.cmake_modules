@@ -160,9 +160,32 @@ function(_jegp_module_dependency_scan)
     set_source_module_dependencies(${source_locations})
   endfunction()
 
+  function(set_directories out_list)
+    macro(set_subdirectories out_list directory)
+      get_directory_property(${out_list} DIRECTORY "${directory}" SUBDIRECTORIES)
+    endmacro()
+
+    set(directories "${CMAKE_SOURCE_DIR}")
+    set_subdirectories(unlisted_directories "${CMAKE_SOURCE_DIR}")
+
+    while(unlisted_directories)
+      list(POP_FRONT unlisted_directories directory)
+      if(NOT EXISTS "${directory}")
+        continue()
+      endif()
+
+      list(APPEND directories "${directory}")
+
+      set_subdirectories(more_unlisted_directories "${directory}")
+      list(APPEND unlisted_directories "${more_unlisted_directories}")
+    endwhile()
+
+    set(${out_list} "${directories}" PARENT_SCOPE)
+  endfunction()
+
   set_mappings_from_module_name("_jegp")
-  get_directory_property(subdirectories SUBDIRECTORIES)
-  foreach(directory IN ITEMS "${CMAKE_SOURCE_DIR}" LISTS subdirectories)
+  set_directories(directories)
+  foreach(directory IN LISTS directories)
     set_directory_module_dependencies("${directory}")
   endforeach()
 endfunction()
