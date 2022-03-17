@@ -53,15 +53,19 @@ function(jegp_add_module name)
     list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
   endif()
 
+  if(NOT _IMPORTABLE_HEADER)
+    list(APPEND
+         _LINK_LIBRARIES
+         INTERFACE
+         $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
+    )
+  endif()
   _jegp_add_target(
     ${name}
     TYPE OBJECT_LIBRARY
     SOURCES ${_SOURCES}
     COMPILE_OPTIONS ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
-    LINK_LIBRARIES
-      ${_LINK_LIBRARIES}
-      INTERFACE
-        $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
+    LINK_LIBRARIES ${_LINK_LIBRARIES}
     PROPERTIES EXPORT_COMPILE_COMMANDS TRUE #
                JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
   set_target_properties(${name} PROPERTIES EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE;_JEGP_MODULE_NAME")
@@ -73,13 +77,6 @@ function(jegp_add_module name)
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(_IMPORTABLE_HEADER)
-      set(touched_object_files "${_jegp_modules_binary_dir}/${name}.o")
-      add_custom_command(OUTPUT "${touched_object_files}" COMMAND "${CMAKE_COMMAND}" -E touch $<TARGET_OBJECTS:${name}>
-                                                                  "${touched_object_files}")
-      add_library(_jegp_touch_object_file_for_${name} OBJECT "${touched_object_files}")
-      add_dependencies(_jegp_touch_object_file_for_${name} ${name})
-      target_link_libraries(${name} INTERFACE _jegp_touch_object_file_for_${name})
-
       get_source_file_property(name "${_SOURCES}" LOCATION)
     endif()
     _jegp_modules_gnu_map("${name}" "${compiled_module_file}")
