@@ -91,7 +91,7 @@ function(jegp_add_module name)
     _jegp_set_script_command(CompileCMI "SOURCE=${source}" "BUILD_DIR=${CMAKE_BINARY_DIR}"
                              "COMPILED_MODULE_FILE=${compiled_module_file}")
 
-    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS $<TARGET_OBJECTS:${name}>)
+    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS ${name})
     target_sources(${name} PRIVATE "${compiled_module_file}")
   endif()
 endfunction()
