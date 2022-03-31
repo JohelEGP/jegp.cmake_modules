@@ -1,5 +1,3 @@
-include("${CMAKE_CURRENT_LIST_DIR}/../JEGPDefineVariables.cmake")
-
 _jegp_default_variable("JEGP_CXX_MODULES_BINARY_PARENT_DIR" "${CMAKE_BINARY_DIR}")
 set(_jegp_modules_binary_dir "${JEGP_CXX_MODULES_BINARY_PARENT_DIR}/JEGPModules")
 set(_jegp_system_modules_cache_default "${_jegp_modules_binary_dir}/system")
