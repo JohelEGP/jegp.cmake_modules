@@ -21,3 +21,15 @@ endmacro()
 function(_jegp_do_not_compile source)
   set_source_files_properties(${source} PROPERTIES HEADER_FILE_ONLY Y)
 endfunction()
+
+function(_jegp_set_ternary variable condition true_value false_value)
+  cmake_language(
+    EVAL
+    CODE
+    "
+    if(${condition})
+      set(${variable} ${true_value} PARENT_SCOPE)
+    else()
+      set(${variable} ${false_value} PARENT_SCOPE)
+    endif()")
+endfunction()

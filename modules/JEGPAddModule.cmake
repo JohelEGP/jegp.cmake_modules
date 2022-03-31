@@ -1,6 +1,7 @@
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPUtilities.cmake")
 
 # Implies "is a module".
 define_property(TARGET PROPERTY JEGP_COMPILED_MODULE_FILE BRIEF_DOCS "File of the CMI; PCM (Clang) or GCM (GCC)."
@@ -91,7 +92,8 @@ function(jegp_add_module name)
     _jegp_set_script_command(CompileCMI "SOURCE=${source}" "BUILD_DIR=${CMAKE_BINARY_DIR}"
                              "COMPILED_MODULE_FILE=${compiled_module_file}")
 
-    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS ${name})
+    _jegp_set_ternary(depends [[${CMAKE_GENERATOR} STREQUAL Ninja]] ${name} $<TARGET_OBJECTS:${name}>)
+    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS ${depends})
     target_sources(${name} PRIVATE "${compiled_module_file}")
   endif()
 endfunction()
