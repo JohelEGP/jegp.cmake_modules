@@ -12,7 +12,7 @@ This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regard
 List of extensions for C++ header files.
 
 - `JEGP_<PROJECT-NAME>_NAME_PREFIX`:
-Prefix of names added by these modules.
+Prefix of names added by some of these modules.
 When not defined, `${PROJECT_NAME}_` is prefixed.
 _Base name_ refers to the unprefixed added name.
 
@@ -122,7 +122,7 @@ jegp_add_test(<name>
               [LINK_LIBRARIES <library>...])
 ```
 
-This function adds a target with base name `test_${name}`.
+This function adds the target `${name}`.
 - `TYPE` specifies the type of the added target and defaults to `EXECUTABLE`. \
   [ _Note:_ An `OBJECT_LIBRARY` target effectively serves as compile-time test. -- _end note_ ]
 - `SOURCES` specifies its source files in `${CMAKE_CURRENT_SOURCE_DIR}`.
