@@ -3,6 +3,8 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPUtilities.cmake")
 
 function(jegp_add_build_error name)
+  message(WARNING "The concept of \"base name\" in `${CMAKE_CURRENT_FUNCTION}` is deprecated; "
+                  "`${name}` will be used instead.")
   _jegp_parse_arguments("" "" "AS{=TEST|BUILD_CHECK};TYPE{=OBJECT_LIBRARY|EXECUTABLE};SOURCE=${name}.cpp"
                         "COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
 

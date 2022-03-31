@@ -2,6 +2,8 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 
 function(jegp_add_test name)
+  message(WARNING "The concept of \"base name\" in `${CMAKE_CURRENT_FUNCTION}` is deprecated; "
+                  "`${name}` will be used instead.")
   _jegp_parse_arguments("" "" "TYPE{=EXECUTABLE|OBJECT_LIBRARY}" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES"
                         ${ARGN})
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
