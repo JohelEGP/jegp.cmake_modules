@@ -24,10 +24,6 @@ Currently required to enable use of imported modules.
 - `JEGP_CXX_MODULES_SYSTEM_CACHE`:
 Cache path of the system's C++ modules.
 
-- `JEGP_SYSTEM_MODULES_CACHE`:
-Same as `JEGP_CXX_MODULES_SYSTEM_CACHE`.
-Deprecated.
-
 ## Modules
 
 ### Project Modules
