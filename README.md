@@ -4,7 +4,11 @@ CMake modules that abstract common functionality in the JEGP libraries.
 
 ## Variables
 
-This repository reserves identifiers that begin with `JEGP_` and `_JEGP_` regardless of case.
+This repository reserves
+CMake identifiers and
+filenames in binary directories
+that begin with `JEGP_` and `_JEGP_` regardless of case
+or equal to the name of a JEGP CMake module.
 
 ### Variables that Change Behavior
 
