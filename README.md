@@ -51,6 +51,25 @@ importable header (when `IMPORTABLE_HEADER` is specified).
 The meaning of the other keywords are the same as for [`jegp_add_test`][],
 except that `PRIVATE` is not implied.
 
+##### Limitations
+
+- The generally supported [`CMAKE_CXX_COMPILER_ID`][]s are `Clang` and `GNU`.
+  The keyword `IMPORTABLE_HEADER` is supported with `GNU`.
+- The generally supported [`CMAKE_GENERATOR`][]s are `Ninja` and `Unix Makefiles`.
+  `Ninja` + `GNU` `CMAKE_CXX_COMPILER_ID` is blocked on https://github.com/ninja-build/ninja/issues/1962,
+  and the dependency scanner does not work with `Ninja`.
+- Only single source file modules are supported.
+  Only one `<source>` must be given,
+  and it must represent a [module interface unit][]
+  (which is to say, other sources of the target can be set through `target_sources`).
+- Bundled is a regex-based module dependency scanner.
+  Because it runs as a [deferred call][] in [`CMAKE_SOURCE_DIR`][],
+  imported modules need to be visible in this directory.
+  Because it is bundled in this CMake module,
+  for dependent projects that do not use this CMake module to benefit from it,
+  the config file must include this CMake module.
+- No support for installing the added target.
+
 #### `JEGPTargetLinkHeaderUnits`
 
 This module defines the following function.
@@ -61,6 +80,11 @@ jegp_target_link_header_units(<target> <header>...)
 
 This function specifies header units to use
 when linking `${target}` and/or its dependents.
+
+##### Limitations
+
+Only supported for `GNU` as the [`CMAKE_CXX_COMPILER_ID`][].
+And then, only for system headers.
 
 #### `JEGPProjectModules`
 
@@ -172,3 +196,13 @@ This module includes all test modules.
 [match]: https://cmake.org/cmake/help/latest/command/string.html#regex-match
 
 [`CMAKE_EXPORT_COMPILE_COMMANDS`]: https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html
+
+[module interface unit]: https://eel.is/c++draft/module#def:module_interface_unit
+
+[deferred call]: https://cmake.org/cmake/help/latest/command/cmake_language.html#deferring-calls
+
+[`CMAKE_CXX_COMPILER_ID`]: https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
+
+[`CMAKE_GENERATOR`]: https://cmake.org/cmake/help/latest/variable/CMAKE_GENERATOR.html
+
+[`CMAKE_SOURCE_DIR`]: https://cmake.org/cmake/help/latest/variable/CMAKE_SOURCE_DIR.html
