@@ -31,6 +31,9 @@ endfunction()
 
 function(jegp_add_module name)
   _jegp_parse_arguments("" "IMPORTABLE_HEADER" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
+  _jegp_assert([[NOT _IMPORTABLE_HEADER OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"]]
+               "Keyword IMPORTABLE_HEADER requires GNU as CMAKE_CXX_COMPILER_ID.")
+
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
 
   set(_jegp_modules_script_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/CppModules")
@@ -51,7 +54,7 @@ function(jegp_add_module name)
     list(APPEND _jegp_modules_compile_options INTERFACE -fprebuilt-module-path=${_jegp_modules_binary_dir})
   endif()
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     unset(suffix)
     if(_IMPORTABLE_HEADER)
       set(suffix -header)

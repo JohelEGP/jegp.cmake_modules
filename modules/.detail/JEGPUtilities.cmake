@@ -1,7 +1,11 @@
 macro(_jegp_assert condition error_message)
-  if(NOT ${condition})
-    message(FATAL_ERROR "Condition does not hold: ${condition}\nError message: ${error_message}")
-  endif()
+  cmake_language(
+    EVAL
+    CODE
+    "
+    if(NOT (${condition}))
+      message(FATAL_ERROR [[Condition does not hold: ${condition}\nError message: ${error_message}]])
+    endif()")
 endmacro()
 
 macro(_jegp_backward variable)
