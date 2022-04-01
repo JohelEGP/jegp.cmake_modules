@@ -82,6 +82,8 @@ function(jegp_add_module name)
 
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(_IMPORTABLE_HEADER)
+      add_custom_target(_jegp_touch_object_of_${name} ALL COMMAND "${CMAKE_COMMAND}" -E touch $<TARGET_OBJECTS:${name}>)
+      add_dependencies(_jegp_touch_object_of_${name} ${name})
       get_source_file_property(module_name "${_SOURCES}" LOCATION)
     endif()
     _jegp_modules_gnu_map("${module_name}" "${compiled_module_file}")
