@@ -62,13 +62,6 @@ function(jegp_add_module name)
     list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
   endif()
 
-  if(NOT _IMPORTABLE_HEADER)
-    list(APPEND
-         _LINK_LIBRARIES
-         INTERFACE
-         $<$<TARGET_EXISTS:${name}>:$<$<NOT:$<IN_LIST:${name},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${name}>>>
-    )
-  endif()
   _jegp_add_target(
     ${name}
     TYPE OBJECT_LIBRARY
@@ -113,6 +106,23 @@ function(_jegp_module_dependency_scan)
       get_target_property(cmi ${target} JEGP_COMPILED_MODULE_FILE)
       set(${key_prefix}_${module_name}_target ${target} PARENT_SCOPE)
       set(${key_prefix}_${module_name}_cmi "${cmi}" PARENT_SCOPE)
+    endforeach()
+  endfunction()
+
+  function(set_module_object_dependencies imported_named_module_targets_var)
+    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      return()
+    endif()
+
+    get_property(buildsystem_named_module_targets GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS)
+    foreach(target IN LISTS buildsystem_named_module_targets ${imported_named_module_targets_var})
+      if(TARGET ${target})
+        target_link_libraries(
+          ${target}
+          INTERFACE
+            $<$<TARGET_EXISTS:${target}>:$<$<NOT:$<IN_LIST:${target},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${target}>>>
+        )
+      endif()
     endforeach()
   endfunction()
 
@@ -216,6 +226,7 @@ function(_jegp_module_dependency_scan)
   set_directories(directories)
   set_imported_named_module_targets(directories imported_named_module_targets)
   set_mappings_from_module_name("_jegp" imported_named_module_targets)
+  set_module_object_dependencies(imported_named_module_targets)
   foreach(directory IN LISTS directories)
     set_directory_module_dependencies("${directory}")
   endforeach()
