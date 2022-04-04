@@ -9,6 +9,7 @@ define_property(TARGET PROPERTY JEGP_COMPILED_MODULE_FILE BRIEF_DOCS "File of th
 
 # Implies "is a named module".
 define_property(TARGET PROPERTY _JEGP_MODULE_NAME BRIEF_DOCS "Module name." FULL_DOCS "_module-name_.")
+define_property(TARGET PROPERTY _JEGP_DIRECTLY_IMPORTED_MODULES)
 
 define_property(GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS BRIEF_DOCS "Targets of added named modules."
                 FULL_DOCS "Buildsystem targets of named modules added via `jegp_add_module`.")
@@ -70,8 +71,13 @@ function(jegp_add_module name)
     LINK_LIBRARIES ${_LINK_LIBRARIES}
     PROPERTIES EXPORT_COMPILE_COMMANDS TRUE #
                JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
-  set_target_properties(${name} PROPERTIES EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE;_JEGP_MODULE_NAME")
+  set_target_properties(
+    ${name} PROPERTIES EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE;_JEGP_MODULE_NAME;_JEGP_DIRECTLY_IMPORTED_MODULES")
   if(NOT _IMPORTABLE_HEADER)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      _jegp_get_directly_imported_modules(${_SOURCES} directly_imported_modules)
+      set_target_properties(${name} PROPERTIES _JEGP_DIRECTLY_IMPORTED_MODULES "${directly_imported_modules}")
+    endif()
     set_target_properties(${name} PROPERTIES _JEGP_MODULE_NAME "${module_name}")
     set_property(GLOBAL APPEND PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS ${name})
   endif()
@@ -114,14 +120,40 @@ function(_jegp_module_dependency_scan)
       return()
     endif()
 
+    function(get_imported_modules target out_modules)
+      macro(set_imported_modules out_list target)
+        get_target_property(${out_list} ${target} _JEGP_DIRECTLY_IMPORTED_MODULES)
+      endmacro()
+
+      set_imported_modules(unlisted_modules ${target})
+
+      set(imported_modules)
+      while(unlisted_modules)
+        list(POP_FRONT unlisted_modules module)
+        list(APPEND imported_modules "${module}")
+
+        if(TARGET ${_jegp_${module}_target})
+          set_imported_modules(more_unlisted_modules ${_jegp_${module}_target})
+          list(APPEND unlisted_modules "${more_unlisted_modules}")
+          list(REMOVE_DUPLICATES unlisted_modules)
+        endif()
+      endwhile()
+
+      set(${out_modules} "${imported_modules}" PARENT_SCOPE)
+    endfunction()
+
     get_property(buildsystem_named_module_targets GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS)
     foreach(target IN LISTS buildsystem_named_module_targets ${imported_named_module_targets_var})
       if(TARGET ${target})
-        target_link_libraries(
-          ${target}
-          INTERFACE
-            $<$<TARGET_EXISTS:${target}>:$<$<NOT:$<IN_LIST:${target},$<TARGET_PROPERTY:LINK_LIBRARIES>>>:$<TARGET_OBJECTS:${target}>>>
-        )
+        get_imported_modules(${target} imported_modules)
+        foreach(imported_module IN LISTS imported_modules)
+          set(imported_module_target ${_jegp_${imported_module}_target})
+          if(TARGET ${imported_module_target})
+            target_sources(
+              ${target}
+              INTERFACE "$<$<TARGET_EXISTS:${imported_module_target}>:$<TARGET_OBJECTS:${imported_module_target}>>")
+          endif()
+        endforeach()
       endif()
     endforeach()
   endfunction()
