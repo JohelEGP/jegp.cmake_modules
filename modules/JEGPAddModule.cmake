@@ -49,19 +49,19 @@ function(jegp_add_module name)
   endif()
   set(compiled_module_file "${_jegp_modules_binary_dir}/${cmi_stem}${JEGP_CMI_EXTENSION}")
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set_source_files_properties("${_SOURCES}" PROPERTIES OBJECT_OUTPUTS "${compiled_module_file}")
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set_source_files_properties("${_SOURCES}" PROPERTIES OBJECT_OUTPUTS "${compiled_module_file}")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     list(APPEND _jegp_modules_compile_options INTERFACE -fprebuilt-module-path=${_jegp_modules_binary_dir})
   endif()
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    unset(suffix)
-    if(_IMPORTABLE_HEADER)
-      set(suffix -header)
-    endif()
-    list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
+  unset(suffix)
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND _IMPORTABLE_HEADER)
+    set(suffix -header)
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    list(APPEND _jegp_modules_compile_options PRIVATE --precompile)
+    set(suffix -module)
   endif()
+  list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
 
   _jegp_add_target(
     ${name}
@@ -91,12 +91,14 @@ function(jegp_add_module name)
     get_source_file_property(source "${_SOURCES}" LOCATION)
 
     _jegp_set_script_directory("${_jegp_modules_script_dir}")
-    _jegp_set_script_command(CompileCMI "SOURCE=${source}" "BUILD_DIR=${CMAKE_BINARY_DIR}"
-                             "COMPILED_MODULE_FILE=${compiled_module_file}")
+    _jegp_set_script_command(ClangCompilerLauncher "SOURCE=${source}" "COMPILED_MODULE_FILE=${compiled_module_file}")
+    list(APPEND ClangCompilerLauncher "--")
 
-    _jegp_set_ternary(depends [[${CMAKE_GENERATOR} STREQUAL Ninja]] ${name} $<TARGET_OBJECTS:${name}>)
-    add_custom_command(OUTPUT "${compiled_module_file}" COMMAND ${CompileCMI} DEPENDS ${depends})
-    target_sources(${name} PRIVATE "${compiled_module_file}")
+    get_target_property(cxx_compiler_launcher ${name} CXX_COMPILER_LAUNCHER)
+    if(cxx_compiler_launcher)
+      list(APPEND ClangCompilerLauncher "${cxx_compiler_launcher}")
+    endif()
+    set_target_properties(${name} PROPERTIES CXX_COMPILER_LAUNCHER "${ClangCompilerLauncher}")
   endif()
 endfunction()
 
