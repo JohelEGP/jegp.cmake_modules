@@ -15,11 +15,6 @@ or equal to the name of a JEGP CMake module.
 - `JEGP_CXX_HEADER_FILE_EXTENSIONS`:
 List of extensions for C++ header files.
 
-- `JEGP_<PROJECT-NAME>_NAME_PREFIX`:
-Prefix of names added by some of these modules.
-When not defined, `${PROJECT_NAME}_` is prefixed.
-_Base name_ refers to the unprefixed added name.
-
 - `JEGP_CXX_MODULES_BINARY_PARENT_DIR`:
 Parent binary directory
 of the modules built for the current configuration.
@@ -27,6 +22,11 @@ Currently required to enable use of imported modules.
 
 - `JEGP_CXX_MODULES_SYSTEM_CACHE`:
 Cache path of the system's C++ modules.
+
+- `JEGP_<PROJECT-NAME>_NAME_PREFIX`:
+Prefix of names added by some of these modules.
+When not defined, `${PROJECT_NAME}_` is prefixed.
+_Base name_ refers to the unprefixed added name.
 
 ## Modules
 
