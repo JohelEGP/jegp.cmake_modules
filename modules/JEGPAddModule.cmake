@@ -46,11 +46,16 @@ function(jegp_add_module name)
 endfunction()
 
 function(jegp_cpp_module name)
-  _jegp_parse_arguments("" "IMPORTABLE_HEADER" "" "" ${ARGN})
+  _jegp_parse_arguments("" "IMPORTABLE_HEADER" "MODULE_INTERFACE_UNIT" "" ${ARGN})
   _jegp_assert([[NOT _IMPORTABLE_HEADER OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"]]
                "Keyword IMPORTABLE_HEADER requires GNU as CMAKE_CXX_COMPILER_ID.")
+  _jegp_assert([[NOT (_IMPORTABLE_HEADER AND DEFINED _MODULE_INTERFACE_UNIT)]] "Keywords are mutually exclusive.")
 
-  _jegp_get_target_cpp_sources("${name}" _SOURCES)
+  if(_MODULE_INTERFACE_UNIT)
+    set(_SOURCES "${_MODULE_INTERFACE_UNIT}")
+  else()
+    _jegp_get_target_cpp_sources("${name}" _SOURCES)
+  endif()
 
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
 
@@ -101,7 +106,8 @@ function(jegp_cpp_module name)
     endif()
     _jegp_modules_gnu_map("${module_name}" "${compiled_module_file}")
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    get_source_file_property(source "${_SOURCES}" LOCATION)
+    _jegp_get_target_cpp_sources("${name}" source)
+    get_source_file_property(source "${source}" LOCATION)
 
     _jegp_set_script_directory("${_jegp_modules_script_dir}")
     _jegp_set_script_command(ClangCompilerLauncher "SOURCE=${source}" "COMPILED_MODULE_FILE=${compiled_module_file}")

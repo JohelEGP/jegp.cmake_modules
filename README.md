@@ -65,7 +65,9 @@ At last, it calls `jegp_cpp_module` with
 `${name}` and forwards `IMPORTABLE_HEADER`.
 
 ```
-jegp_cpp_module(<target> [IMPORTABLE_HEADER])
+jegp_cpp_module(<target>
+                [IMPORTABLE_HEADER |
+                 MODULE_INTERFACE_UNIT <source>])
 ```
 
 This function enables the object library `${target}` to compile as a C++
@@ -81,9 +83,10 @@ importable header (when `IMPORTABLE_HEADER` is specified).
   and the dependency scanner does not work with `Ninja`.
 - Only single source file modules are supported.
   At the call of `jegp_cpp_module`,
+  either `MODULE_INTERFACE_UNIT` should be specified, or
   the target's [`SOURCES` property][] must have
   only one C++ source outside a generator expression,
-  and it must represent a [module interface unit][].
+  whichever must represent its [module interface unit][].
 - Bundled is a regex-based module dependency scanner.
   Because it runs as a [deferred call][] in [`CMAKE_SOURCE_DIR`][],
   imported modules need to be visible in this directory.
