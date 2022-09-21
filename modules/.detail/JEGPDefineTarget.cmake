@@ -1,0 +1,16 @@
+include("${CMAKE_CURRENT_LIST_DIR}/JEGPParseArguments.cmake")
+
+function(_jegp_define_target name)
+  _jegp_parse_arguments("" "EXCLUDE_FROM_ALL" "" "SOURCES;COMPILE_OPTIONS;LINK_LIBRARIES;PROPERTIES" ${ARGN})
+
+  if(_SOURCES)
+    target_sources(${name} ${_SOURCES})
+  endif()
+  if(_COMPILE_OPTIONS)
+    target_compile_options(${name} ${_COMPILE_OPTIONS})
+  endif()
+  if(_LINK_LIBRARIES)
+    target_link_libraries(${name} ${_LINK_LIBRARIES})
+  endif()
+  set_target_properties(${name} PROPERTIES EXCLUDE_FROM_ALL ${_EXCLUDE_FROM_ALL} ${_PROPERTIES})
+endfunction()

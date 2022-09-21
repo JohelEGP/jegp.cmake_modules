@@ -47,7 +47,7 @@ The semantics are those of [`CMAKE_<LANG>_FLAGS`][].
 
 #### `JEGPAddModule`
 
-This module defines the following function.
+This module defines the following functions.
 
 ```
 jegp_add_module(<name>
@@ -57,12 +57,20 @@ jegp_add_module(<name>
                 [LINK_LIBRARIES <library>...])
 ```
 
-This function adds the object library `${name}`
-representing a C++
+This function adds the object library `${name}`.
+The meaning of the keywords other than `IMPORTABLE_HEADER`
+are the same as for [`jegp_add_test`][],
+except that `PRIVATE` is not implied.
+At last, it calls `jegp_cpp_module` with
+`${name}` and forwards `IMPORTABLE_HEADER`.
+
+```
+jegp_cpp_module(<target> [IMPORTABLE_HEADER])
+```
+
+This function enables the object library `${target}` to compile as a C++
 module (default) or
 importable header (when `IMPORTABLE_HEADER` is specified).
-The meaning of the other keywords are the same as for [`jegp_add_test`][],
-except that `PRIVATE` is not implied.
 
 ##### Limitations
 
@@ -72,9 +80,10 @@ except that `PRIVATE` is not implied.
   `Ninja` + `GNU` `CMAKE_CXX_COMPILER_ID` is blocked on https://github.com/ninja-build/ninja/issues/1962,
   and the dependency scanner does not work with `Ninja`.
 - Only single source file modules are supported.
-  Only one `<source>` must be given,
-  and it must represent a [module interface unit][]
-  (which is to say, other sources of the target can be set through `target_sources`).
+  At the call of `jegp_cpp_module`,
+  the target's [`SOURCES` property][] must have
+  only one C++ source outside a generator expression,
+  and it must represent a [module interface unit][].
 - Bundled is a regex-based module dependency scanner.
   Because it runs as a [deferred call][] in [`CMAKE_SOURCE_DIR`][],
   imported modules need to be visible in this directory.
@@ -234,3 +243,5 @@ This module includes all test modules.
 [`CMAKE_SOURCE_DIR`]: https://cmake.org/cmake/help/latest/variable/CMAKE_SOURCE_DIR.html
 
 [`CMAKE_<LANG>_FLAGS`]: https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_FLAGS.html
+
+[`SOURCES` property]: https://cmake.org/cmake/help/latest/prop_tgt/SOURCES.html

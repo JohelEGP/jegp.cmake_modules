@@ -1,4 +1,6 @@
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPCppUtilities.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPDefineTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPParseArguments.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPUtilities.cmake")
@@ -31,9 +33,24 @@ function(_jegp_get_directly_imported_modules source out_modules)
 endfunction()
 
 function(jegp_add_module name)
-  _jegp_parse_arguments("" "IMPORTABLE_HEADER" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
+  _jegp_parse_arguments("" "" "" "SOURCES=${name}.cpp;COMPILE_OPTIONS;LINK_LIBRARIES" ${ARGN})
+
+  _jegp_add_target(
+    ${name}
+    TYPE OBJECT_LIBRARY
+    SOURCES ${_SOURCES}
+    COMPILE_OPTIONS ${_COMPILE_OPTIONS}
+    LINK_LIBRARIES ${_LINK_LIBRARIES})
+
+  jegp_cpp_module("${name}" ${_UNPARSED_ARGUMENTS})
+endfunction()
+
+function(jegp_cpp_module name)
+  _jegp_parse_arguments("" "IMPORTABLE_HEADER" "" "" ${ARGN})
   _jegp_assert([[NOT _IMPORTABLE_HEADER OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"]]
                "Keyword IMPORTABLE_HEADER requires GNU as CMAKE_CXX_COMPILER_ID.")
+
+  _jegp_get_target_cpp_sources("${name}" _SOURCES)
 
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
 
@@ -63,12 +80,8 @@ function(jegp_add_module name)
   endif()
   list(APPEND _jegp_modules_compile_options PRIVATE -x c++${suffix})
 
-  _jegp_add_target(
-    ${name}
-    TYPE OBJECT_LIBRARY
-    SOURCES ${_SOURCES}
-    COMPILE_OPTIONS ${_COMPILE_OPTIONS} PUBLIC ${_jegp_modules_compile_options}
-    LINK_LIBRARIES ${_LINK_LIBRARIES}
+  _jegp_define_target(
+    ${name} COMPILE_OPTIONS PUBLIC ${_jegp_modules_compile_options}
     PROPERTIES EXPORT_COMPILE_COMMANDS TRUE #
                JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
   set_target_properties(
