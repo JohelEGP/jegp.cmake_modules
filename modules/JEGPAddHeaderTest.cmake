@@ -1,3 +1,5 @@
+message(DEPRECATION "Use the `CMAKE_VERIFY_INTERFACE_HEADER_SETS` variable.")
+
 function(jegp_add_header_test)
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/JEGPDefineVariables.cmake")
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.detail/TestHeaders.cmake")

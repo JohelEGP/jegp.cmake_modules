@@ -160,6 +160,8 @@ jegp_add_headers_test(mylib PRIVATE_REGEXES "detail/;external/")
 
 #### `JEGPAddHeaderTest`
 
+This module is deprecated in favor of [`CMAKE_VERIFY_INTERFACE_HEADER_SETS`][].
+
 This module defines the following function.
 
 ```
@@ -248,3 +250,5 @@ This module includes all test modules.
 [`CMAKE_<LANG>_FLAGS`]: https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_FLAGS.html
 
 [`SOURCES` property]: https://cmake.org/cmake/help/latest/prop_tgt/SOURCES.html
+
+[`CMAKE_VERIFY_INTERFACE_HEADER_SETS`]: https://cmake.org/cmake/help/latest/variable/CMAKE_VERIFY_INTERFACE_HEADER_SETS.html
