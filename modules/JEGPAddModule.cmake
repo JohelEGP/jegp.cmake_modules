@@ -87,8 +87,7 @@ function(jegp_cpp_module name)
 
   _jegp_define_target(
     ${name} COMPILE_OPTIONS PUBLIC ${_jegp_modules_compile_options}
-    PROPERTIES EXPORT_COMPILE_COMMANDS TRUE #
-               JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
+    PROPERTIES JEGP_COMPILED_MODULE_FILE "${compiled_module_file}")
   set_target_properties(
     ${name} PROPERTIES EXPORT_PROPERTIES "JEGP_COMPILED_MODULE_FILE;_JEGP_MODULE_NAME;_JEGP_DIRECTLY_IMPORTED_MODULES")
   if(NOT _IMPORTABLE_HEADER)
