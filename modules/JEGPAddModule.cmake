@@ -14,7 +14,7 @@ define_property(TARGET PROPERTY _JEGP_MODULE_NAME BRIEF_DOCS "Module name." FULL
 define_property(TARGET PROPERTY _JEGP_DIRECTLY_IMPORTED_MODULES)
 
 define_property(GLOBAL PROPERTY _JEGP_BUILDSYSTEM_NAMED_MODULE_TARGETS BRIEF_DOCS "Targets of added named modules."
-                FULL_DOCS "Buildsystem targets of named modules added via `jegp_add_module`.")
+                FULL_DOCS "Buildsystem targets of named modules added via `jegp_cpp_module`.")
 
 # Sets `${out_module}` to the _module-name_ in the _module-declaration_s of `"${source}"`.
 function(_jegp_get_module_name source out_module)
