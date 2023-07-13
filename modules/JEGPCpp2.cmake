@@ -2,7 +2,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPCheckCpp2.cmake")
 
 function(jegp_cpp2_target name)
   get_target_property(cpp2_sources "${name}" SOURCES)
-  list(FILTER cpp2_sources INCLUDE REGEX "\\.cpp2$")
+  list(FILTER cpp2_sources INCLUDE REGEX "\\.(cpp|h)2$")
 
   foreach(cpp2_src IN LISTS cpp2_sources)
     string(REGEX REPLACE "2$" "" cpp1_src "${cpp2_src}")
