@@ -10,7 +10,7 @@ function(jegp_cpp2_target name)
     cmake_path(GET cpp1_src PARENT_PATH cpp1_src_parent_path)
     cmake_path(GET cpp1_src FILENAME cpp1_src_filename)
     cmake_path(RELATIVE_PATH cpp1_src_parent_path BASE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
-    string(PREPEND cpp1_src_parent_path "${CMAKE_CURRENT_BINARY_DIR}/JEGPCpp2/generated_sources/")
+    string(PREPEND cpp1_src_parent_path "${CMAKE_CURRENT_BINARY_DIR}/${JEGP_CPPFRONT_BUILD_DIR}/")
     file(MAKE_DIRECTORY "${cpp1_src_parent_path}")
     set(cpp1_src "${cpp1_src_parent_path}/${cpp1_src_filename}")
 
