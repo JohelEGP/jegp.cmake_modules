@@ -41,8 +41,5 @@ function(jegp_cpp2_target_sources)
     set(ARGV${i} "${cpp1_src}")
     list(APPEND args "\${ARGV${i}}")
   endforeach()
-  cmake_language(
-    EVAL CODE "
-    message(\"${args}\")
-    target_sources(${args})")
+  cmake_language(EVAL CODE "target_sources(${args})")
 endfunction()
