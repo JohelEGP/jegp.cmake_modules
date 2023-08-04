@@ -21,6 +21,19 @@ parse:
     jegp_target_link_header_units:
       pargs:
         nargs: 1+
+    jegp_cpp2_target_sources:
+      pargs:
+        nargs: 1
+      kwargs:
+        JEGP_FILE_SET_KWARGS: &file_set
+          kwargs:
+            FILE_SET: 1
+            TYPE: 1
+            BASE_DIRS: +
+            FILES: +
+        PUBLIC: *file_set
+        INTERFACE: *file_set
+        PRIVATE: *file_set
     jegp_add_headers_test:
       pargs:
         nargs: 1+
