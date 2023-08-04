@@ -13,7 +13,7 @@ function(_jegp_cpp2_generate cpp2_src)
 
   add_custom_command(
     OUTPUT "${cpp1_src}" COMMAND "${JEGP_CXX2_COMPILER}" "${JEGP_CXX2_FLAGS}" "${cpp2_src}" -o "${cpp1_src}"
-    DEPENDS "${cpp2_src}" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    DEPENDS "${JEGP_CXX2_COMPILER}" "${cpp2_src}" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
   set_source_files_properties("${cpp1_src}" PROPERTIES INCLUDE_DIRECTORIES "${JEGP_CPPFRONT_INCLUDE_DIRECTORIES}")
 
   return(PROPAGATE cpp1_src)
