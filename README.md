@@ -105,18 +105,19 @@ as if by [`configure_file`][]'s `@ONLY` mode.
 | first_library_chapter | Stable label of the first library chapter.                          |
 | last_library_chapter  | Stable label of the last library chapter.                           |
 
-| Variable                 | Default string value                      |
-| ------------------------ | ----------------------------------------- |
-| pdf_subject              | `${PROJECT_NAME}`                         |
-| pdf_creator              | The `user.name` of Git's configuration.   |
-| document_number          | `\unspec`                                 |
-| previous_document_number | `\unspec`                                 |
-| release_date             | `\today`                                  |
-| reply_to_header          | `Reply at`                                |
-| reply_to                 | `\url{${PROJECT_HOMEPAGE_URL}}`           |
-| cover_title              | `${pdf_title}`                            |
-| cover_footer             | Same as the C++ WD.                       |
-| check_comment_alignment  | `false`                                   |
+| Variable                 | Default string value                    |
+|:-------------------------|:----------------------------------------|
+| pdf_subject              | `${PROJECT_NAME}`                       |
+| pdf_creator              | The `user.name` of Git's configuration. |
+| document_number_header   | `Ref`                                   |
+| document_number          | `\unspec`                               |
+| previous_document_number | `\unspec`                               |
+| release_date             | `\today`                                |
+| reply_to_header          | `Reply at`                              |
+| reply_to                 | `\url{${PROJECT_HOMEPAGE_URL}}`         |
+| cover_title              | `${pdf_title}`                          |
+| cover_footer             | Same as the C++ WD.                     |
+| check_comment_alignment  | `false`                                 |
 
 Additionally, `std.tex` is configured to input
 all library and appendix `<source>` in the input order.

@@ -74,6 +74,7 @@ function(jegp_add_standardese_sources name)
         "cover_title;${cover_title}"
         "cover_footer;${cover_footer}"
         "pdf_subject;${PROJECT_NAME}"
+        [[document_number_header;Ref]]
         [[document_number;\\unspec]]
         [[previous_document_number;\\unspec]]
         [[release_date;\\today]]
