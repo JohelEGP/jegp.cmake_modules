@@ -1,4 +1,4 @@
-include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPCheckCpp2.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/.detail/Cpp2/Check.cmake")
 
 function(_jegp_cpp2_generate cpp2_src)
   string(REGEX REPLACE "2$" "" cpp1_src "${cpp2_src}")
