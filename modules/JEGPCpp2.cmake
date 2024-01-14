@@ -1,4 +1,4 @@
-include("${CMAKE_CURRENT_LIST_DIR}/.detail/Cpp2/Check.cmake")
+# include("${CMAKE_CURRENT_LIST_DIR}/.detail/Cpp2/Check.cmake")
 
 function(_jegp_cpp2_generate cpp2_src)
   string(REGEX REPLACE "2$" "" cpp1_src "${cpp2_src}")
@@ -11,13 +11,21 @@ function(_jegp_cpp2_generate cpp2_src)
   set(cpp1_src "${cpp1_src_parent_path}/${cpp1_src_filename}")
   cmake_path(NORMAL_PATH cpp1_src)
 
-  set(input_libraries ${JEGP_CXX2_FLAGS})
-  list(FILTER input_libraries INCLUDE REGEX "<CPP2_INPUT_LIBRARY:")
-  list(TRANSFORM JEGP_CXX2_FLAGS REPLACE "<CPP2_INPUT_LIBRARY:" "<TARGET_FILE:")
-  list(TRANSFORM input_libraries REPLACE "<CPP2_INPUT_LIBRARY:" "<TARGET_FILE:")
+  cmake_path(ABSOLUTE_PATH cpp2_src)
+  list(JOIN JEGP_CPPFRONT_METAFUNCTION_LIBRARIES ":" metafunction_libraries)
+  set(env_opts)
+  if(JEGP_CPPFRONT_METAFUNCTION_LIBRARIES)
+    list(APPEND env_opts "CPPFRONT_METAFUNCTION_LIBRARIES=${metafunction_libraries}")
+  endif()
+  if(JEGP_CPPFRONT_METAFUNCTION_LIBRARY)
+    list(APPEND env_opts "CPPFRONT_METAFUNCTION_LIBRARY=${JEGP_CPPFRONT_METAFUNCTION_LIBRARY}")
+  endif()
   add_custom_command(
-    OUTPUT "${cpp1_src}" COMMAND "${JEGP_CXX2_COMPILER}" ${JEGP_CXX2_FLAGS} "${cpp2_src}" -o "${cpp1_src}"
-    DEPENDS "${JEGP_CXX2_COMPILER}" "${cpp2_src}" ${input_libraries} WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    OUTPUT "${cpp1_src}"
+    COMMAND "${CMAKE_COMMAND}" -E env ${env_opts} -- "${JEGP_CXX2_COMPILER}" ${JEGP_CXX2_FLAGS} "${cpp2_src}" -o
+            "${cpp1_src}"
+    DEPENDS "${JEGP_CXX2_COMPILER}" "${cpp2_src}" ${JEGP_CPPFRONT_METAFUNCTION_LIBRARIES}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
   set_source_files_properties("${cpp1_src}" PROPERTIES INCLUDE_DIRECTORIES "${JEGP_CPPFRONT_INCLUDE_DIRECTORIES}")
 
   return(PROPAGATE cpp1_src)
