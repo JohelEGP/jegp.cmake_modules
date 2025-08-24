@@ -294,13 +294,6 @@ sets up the generation of its Cpp1 source file under [`CMAKE_CURRENT_BINARY_DIR`
 replaces it with the generated Cpp1 source file
 before finally forwarding to `target_sources`.
 
-#### `JEGPProjectModules`
-
-This module is deprecated.
-Include the used modules individually.
-
-This module includes all project modules.
-
 ### Test Modules
 
 #### `JEGPAddTest`
@@ -347,13 +340,6 @@ The build output contains or matches `\2` depending on whether `\1` matched.
 A copy of the source without the error message specifiers is built for the check.
 
 _Note:_ `AS BUILD_CHECK` has the limitations of [`CMAKE_EXPORT_COMPILE_COMMANDS`][].
-
-#### `JEGPTestUtilities`
-
-This module is deprecated.
-Include the used modules individually.
-
-This module includes all test modules.
 
 [stem]: https://cmake.org/cmake/help/latest/command/cmake_path.html#stem-def
 
