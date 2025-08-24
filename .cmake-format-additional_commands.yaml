@@ -56,11 +56,6 @@ parse:
         PUBLIC: *file_set
         INTERFACE: *file_set
         PRIVATE: *file_set
-    jegp_add_headers_test:
-      pargs:
-        nargs: 1+
-      kwargs:
-        PRIVATE_REGEXES: +
     jegp_add_test:
       pargs:
         nargs: 1+
