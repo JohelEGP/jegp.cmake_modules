@@ -310,6 +310,8 @@ This module includes all project modules.
 
 #### `JEGPHeadersTest`
 
+This module is deprecated in favor of [`CMAKE_VERIFY_INTERFACE_HEADER_SETS`][].
+
 This module defines the following function.
 
 ```

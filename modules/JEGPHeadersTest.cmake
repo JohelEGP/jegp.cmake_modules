@@ -1,3 +1,5 @@
+message(DEPRECATION "Use the `CMAKE_VERIFY_INTERFACE_HEADER_SETS` variable.")
+
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 
 # Process:
