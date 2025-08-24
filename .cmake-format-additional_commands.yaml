@@ -29,20 +29,6 @@ parse:
             SECTION_FILE_STYLE: 1
             LATEX_REGEX_REPLACE: +
             HTML_REGEX_REPLACE: +
-    jegp_add_module:
-      pargs: &jegp_add_module_pargs
-        nargs: 1
-        flags:
-        - IMPORTABLE_HEADER
-      kwargs:
-        SOURCES: +
-        COMPILE_OPTIONS: *public_interface_private
-        LINK_LIBRARIES: *public_interface_private
-    jegp_cpp_module:
-      pargs: *jegp_add_module_pargs
-    jegp_target_link_header_units:
-      pargs:
-        nargs: 1+
     jegp_cpp2_target_sources:
       pargs:
         nargs: 1
