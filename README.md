@@ -336,26 +336,6 @@ jegp_add_headers_test(mylib PRIVATE_REGEXES "detail/;external/")
 ```
 -- _end example_ ]
 
-#### `JEGPAddHeaderTest`
-
-This module is deprecated in favor of [`CMAKE_VERIFY_INTERFACE_HEADER_SETS`][].
-
-This module defines the following function.
-
-```
-jegp_add_header_test()
-```
-
-This function enforces [SF.11]
-for the public headers of the JEGP library `${PROJECT_NAME}`.
-It adds an executable target that builds when the headers are self-contained.
-Otherwise, a build error should give a clue about the problematic headers.
-
-The target's base name is `test_headers`.
-`${PROJECT_NAME}` is a `PRIVATE` linked library of the target.
-The public headers of `${PROJECT_NAME}` are those ending in `.hpp`
-in the directory `${${PROJECT_NAME}_SOURCE_DIR}/include`.
-
 #### `JEGPAddTest`
 
 This module defines the following function.
