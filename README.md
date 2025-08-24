@@ -296,6 +296,9 @@ before finally forwarding to `target_sources`.
 
 #### `JEGPProjectModules`
 
+This module is deprecated.
+Include the used modules individually.
+
 This module includes all project modules.
 
 ### Test Modules
@@ -346,6 +349,9 @@ A copy of the source without the error message specifiers is built for the check
 _Note:_ `AS BUILD_CHECK` has the limitations of [`CMAKE_EXPORT_COMPILE_COMMANDS`][].
 
 #### `JEGPTestUtilities`
+
+This module is deprecated.
+Include the used modules individually.
 
 This module includes all test modules.
 
