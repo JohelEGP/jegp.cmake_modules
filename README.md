@@ -206,6 +206,9 @@ The linked forks include C++ modules support:
 
 #### `JEGPAddModule`
 
+This module is deprecated.
+Use [cmake-cxxmodules(7)][].
+
 This module defines the following functions.
 
 ```
@@ -255,6 +258,9 @@ importable header (when `IMPORTABLE_HEADER` is specified).
 - No support for installing the added target.
 
 #### `JEGPTargetLinkHeaderUnits`
+
+This module is deprecated.
+Use [cmake-cxxmodules(7)][].
 
 This module defines the following function.
 
@@ -385,3 +391,5 @@ _Note:_ `AS BUILD_CHECK` has the limitations of [`CMAKE_EXPORT_COMPILE_COMMANDS`
 [`target_sources`]: https://cmake.org/cmake/help/latest/command/target_sources.html
 
 [`CMAKE_CURRENT_BINARY_DIR`]: https://cmake.org/cmake/help/latest/variable/CMAKE_CURRENT_BINARY_DIR.html
+
+[cmake-cxxmodules(7)]: https://cmake.org/cmake/help/latest/manual/cmake-cxxmodules.7.html

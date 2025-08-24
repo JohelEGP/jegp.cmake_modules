@@ -1,3 +1,5 @@
+message(DEPRECATION "This module is deprecated. Use cmake-cxxmodules(7).")
+
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPAddTarget.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/.detail/JEGPSetScript.cmake")
 
