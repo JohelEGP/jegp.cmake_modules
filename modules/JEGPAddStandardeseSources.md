@@ -46,7 +46,7 @@ The `<sectionfilestyle>` is forwarded to `cxxdraft-htmlgen`.
 ##### Process
 
 `<name>` configures [C++ Standard Draft Sources][] via the patched fork specified by
-[the `JEGP_STANDARDESE_SOURCES_GIT_REPOSITORY` and `JEGP_STANDARDESE_SOURCES_GIT_TAG` variables](#standardese_sources_vars).
+[the `JEGP_STANDARDESE_SOURCES_GIT_REPOSITORY` and `JEGP_STANDARDESE_SOURCES_GIT_TAG` variables](../README.md#standardese_sources_vars).
 <br/>_Recommended practice_: For faster processing, set the variable to a local shallow clone.
 ```bash
 # 1a. Clone <https://github.com/JohelEGP/draft/>.
